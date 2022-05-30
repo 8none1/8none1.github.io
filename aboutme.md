@@ -1,16 +1,29 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: Hello chief let's talk, why not.
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+I'm Will Cooke.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+I like computers.
 
-What else do you need?
+I work at [InfluxData](https://www.influxdata.com) as the director of engineering for the storage engine and write-path.
 
-### My story
+I used to work at [Canonical](https://www.canonical.com) as the director of Ubuntu Desktop.  I still use Ubuntu all day every day.
 
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](https://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+I'm part of the [Late Night Linux](https://latenightlinux.com) podcast team.  We put out a weekly podcast about Linux, free software and general hatred of the Tory party.
+
+My amateur radio callsign is M7WZY.
+
+I'm on [Twitter](https://twitter.com/8none1).
+
+I'm on [GitHub](https://github.com/8none1).
+
+I'm on [LinkedIn](https://www.linkedin.com/in/will-cooke-64b69417/).
+
+I'm on [Telegram](https://t.me/willcooke).
+
+I also like home automation, plumbing, electrics and electronics, golf, craft beer, chicken wings and looking at graphs.
+
+
