@@ -1,0 +1,346 @@
+--- wctdm.c.ori	2013-02-12 13:03:06.312777324 +0000
++++ wctdm.c	2013-02-12 11:59:31.908847168 +0000
+@@ -21,6 +21,21 @@
+  * the GNU General Public License Version 2 as published by the
+  * Free Software Foundation. See the LICENSE file included with
+  * this program for more details.
++ *
++ *
++ * The source for this specfic version was downloaded from:
++ * http://downloads.openvox.cn/pub/drivers/callerid_patches/2.6.1-wctdm.c
++ * 
++ * Note:  there is a missing semi-colon on line 333 (or there abouts) in the
++ * openvox code, which is fixed in this version.  EDIT 27 Nov 13 - that seems
++ * to be fixed now.
++ *
++ * Built On Freepbx Distro 64bit BETA-3.211.63-5 Release Date-01-24-13
++ * by Will Cooke - 08 Feb 2013
++ * will@whizzy.org - http://www.whizzy.org for a story of how this came to be.
++ * 
++ * In an effort to fix intermittent Caller ID detection on UK PSTN lines
++ * 
++ * Changed some of the text so I can tell which module I'm testing.
+  */
+ 
+ #include <linux/kernel.h>
+@@ -173,6 +188,12 @@
+ #define FLAG_3215	(1 << 0)
+ 
+ #define NUM_CARDS 4
++enum cid_hook_state {
++	CID_STATE_IDLE = 0,
++	CID_STATE_RING_ON,
++	CID_STATE_RING_OFF,
++	CID_STATE_WAIT_RING_FINISH
++};
+ 
+ #define MAX_ALARMS 10
+ 
+@@ -272,6 +293,12 @@
+ 	volatile unsigned int *readchunk;				/* Double-word aligned read memory */
+ 	struct dahdi_chan _chans[NUM_CARDS];
+ 	struct dahdi_chan *chans[NUM_CARDS];
++char *cid_history_buf[NUM_CARDS];		/* used to support global cid */
++	int  cid_history_ptr[NUM_CARDS];
++	int  cid_history_clone_cnt[NUM_CARDS];
++	enum cid_hook_state cid_state[NUM_CARDS];
++	int  cid_ring_on_time[NUM_CARDS];
++	
+ };
+ 
+ 
+@@ -281,7 +308,7 @@
+ };
+ 
+ static struct wctdm_desc wctdm = { "Wildcard S400P Prototype", 0 };
+-static struct wctdm_desc wctdme = { "Wildcard TDM400P REV E/F", 0 };
++static struct wctdm_desc wctdme = { "Wildcard TDM400P REV E/F CID HACK", 0 };
+ static struct wctdm_desc wctdmh = { "Wildcard TDM400P REV H", 0 };
+ static struct wctdm_desc wctdmi = { "Wildcard TDM400P REV I", 0 };
+ static int acim2tiss[16] = { 0x0, 0x1, 0x4, 0x5, 0x7, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x2, 0x0, 0x3 };
+@@ -313,6 +340,10 @@
+ static int fxorxgain = 0;
+ static int fxstxgain = 0;
+ static int fxsrxgain = 0;
++static int cidbeforering = 0;
++static int cidbuflen = 3000;	/* in msec, default 3000 */
++static int cidtimeout = 6*1000;	/* in msec, default 6000 */
++static int fixedtimepolarity=0;
+ 
+ static int wctdm_init_proslic(struct wctdm *wc, int card, int fast , int manual, int sane);
+ static int wctdm_init_ring_generator_mode(struct wctdm *wc, int card);
+@@ -438,6 +469,54 @@
+ 			wc->chans[0]->readchunk[x] = (readchunk[x]) & 0xff;
+ #endif
+ 	}
++	if(cidbeforering)
++	{
++		for(x=0; x<NUM_CARDS; x++)
++		{
++			if (wc->modtype[wc->chans[x]->chanpos - 1] == MOD_TYPE_FXO)
++				if(wc->mod[wc->chans[x]->chanpos - 1].fxo.offhook == 0)
++				{
++					/*unsigned int *p_readchunk, *p_cid_history;
++					
++					p_readchunk = (unsigned int*)wc->chans[x].readchunk;
++					p_cid_history = (unsigned int*)(wc->cid_history_buf[x] + wc->cid_history_ptr[x]);*/
++					
++					if(wc->cid_state[x] == CID_STATE_IDLE)	/* we need copy data to the cid voice buffer */
++					{
++						memcpy(wc->cid_history_buf[x] + wc->cid_history_ptr[x], wc->chans[x]->readchunk, DAHDI_CHUNKSIZE);
++						wc->cid_history_ptr[x] = (wc->cid_history_ptr[x] + DAHDI_CHUNKSIZE)%(cidbuflen * DAHDI_MAX_CHUNKSIZE);
++					}
++					else if (wc->cid_state[x] == CID_STATE_RING_ON)
++						wc->cid_history_clone_cnt[x] = cidbuflen;
++					else if (wc->cid_state[x] == CID_STATE_RING_OFF)
++					{ 
++						if(wc->cid_history_clone_cnt[x])
++						{	
++							memcpy(wc->chans[x]->readchunk, wc->cid_history_buf[x] + wc->cid_history_ptr[x], DAHDI_MAX_CHUNKSIZE);
++							wc->cid_history_clone_cnt[x]--;
++							wc->cid_history_ptr[x] = (wc->cid_history_ptr[x] + DAHDI_MAX_CHUNKSIZE)%(cidbuflen * DAHDI_MAX_CHUNKSIZE);
++						}
++						else
++						{
++							wc->cid_state[x] = CID_STATE_WAIT_RING_FINISH;
++							wc->cid_history_clone_cnt[x] = cidtimeout; /* wait 6 sec, if no ring, return to idle */
++						}
++					}
++					else if(wc->cid_state[x] == CID_STATE_WAIT_RING_FINISH)
++					{
++						if(wc->cid_history_clone_cnt[x] > 0)
++							wc->cid_history_clone_cnt[x]--;
++						else
++						{
++							wc->cid_state[x] = CID_STATE_IDLE;
++							wc->cid_history_ptr[x] = 0;
++							wc->cid_history_clone_cnt[x] = 0;
++						}
++					}
++				}
++		}		
++	}
++
+ #ifdef AUDIO_RINGCHECK
+ 	for (x=0;x<wc->cards;x++)
+ 		ring_check(wc, x);
+@@ -802,6 +881,19 @@
+ 	if (errors)
+ 		return;
+ 	if (!fxo->offhook) {
++if(fixedtimepolarity) {
++			if ( wc->cid_state[card] == CID_STATE_RING_ON && wc->cid_ring_on_time[card]>0)
++			{
++				if(wc->cid_ring_on_time[card]>=fixedtimepolarity )
++				{
++					dahdi_qevent_lock(wc->chans[card], DAHDI_EVENT_POLARITY);
++					wc->cid_ring_on_time[card] = -1;	/* the polarity already sent */	
++				}
++				else {
++					wc->cid_ring_on_time[card] += 16;
++				}
++			}
++	    }		
+ 		if (fwringdetect) {
+ 			res = wc->reg0shadow[card] & 0x60;
+ 			if (fxo->ringdebounce) {
+@@ -812,6 +904,15 @@
+ 						fxo->wasringing = 1;
+ 						if (debug)
+ 							printk(KERN_DEBUG "RING on %d/%d!\n", wc->span.spanno, card + 1);
++if(cidbeforering)
++						{
++							if(wc->cid_state[card] == CID_STATE_IDLE) {
++								wc->cid_state[card] = CID_STATE_RING_ON;
++								wc->cid_ring_on_time[card] = 16;	/* check every 16ms */
++							} else 
++						dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_RING);
++						}
++						else						
+ 						dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_RING);
+ 					}
+ 					fxo->lastrdtx = res;
+@@ -821,7 +922,24 @@
+ 						fxo->wasringing = 0;
+ 						if (debug)
+ 							printk(KERN_DEBUG "NO RING on %d/%d!\n", wc->span.spanno, card + 1);
++	if(cidbeforering)
++						{
++							if(wc->cid_state[card] == CID_STATE_RING_ON)
++							{
++								 if(fixedtimepolarity==0)
++								dahdi_qevent_lock(wc->chans[card], DAHDI_EVENT_POLARITY);
++								wc->cid_state[card] = CID_STATE_RING_OFF;
++							}
++							else 
++							{
++								if(wc->cid_state[card] == CID_STATE_WAIT_RING_FINISH)
++									wc->cid_history_clone_cnt[card] = cidtimeout;
+ 						dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_OFFHOOK);
++}
++						} else 
++							dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_OFFHOOK);
++						  
++						
+ 					}
+ 				}
+ 			} else if (res && (fxo->battery == BATTERY_PRESENT)) {
+@@ -835,6 +953,15 @@
+ 				if (fxo->ringdebounce >= DAHDI_CHUNKSIZE * ringdebounce) {
+ 					if (!fxo->wasringing) {
+ 						fxo->wasringing = 1;
++if(cidbeforering)
++						{
++							if(wc->cid_state[card] == CID_STATE_IDLE){
++								wc->cid_state[card] = CID_STATE_RING_ON;
++								wc->cid_ring_on_time[card] = 16;		/* check every 16ms */
++						  }	else
++								dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_RING);
++						}
++						else
+ 						dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_RING);
+ 						if (debug)
+ 							printk(KERN_DEBUG "RING on %d/%d!\n", wc->span.spanno, card + 1);
+@@ -846,6 +973,22 @@
+ 				if (fxo->ringdebounce <= 0) {
+ 					if (fxo->wasringing) {
+ 						fxo->wasringing = 0;
++if(cidbeforering)
++						{
++							if(wc->cid_state[card] == CID_STATE_RING_ON)
++							{
++								if(fixedtimepolarity==0)
++								dahdi_qevent_lock(wc->chans[card], DAHDI_EVENT_POLARITY);
++								wc->cid_state[card] = CID_STATE_RING_OFF;
++							}
++							else 
++							{
++								if(wc->cid_state[card] == CID_STATE_WAIT_RING_FINISH)
++									wc->cid_history_clone_cnt[card] = cidtimeout;
++								dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_OFFHOOK);
++							}
++						}
++						else						
+ 						dahdi_hooksig(wc->chans[card], DAHDI_RXSIG_OFFHOOK);
+ 						if (debug)
+ 							printk(KERN_DEBUG "NO RING on %d/%d!\n", wc->span.spanno, card + 1);
+@@ -2336,6 +2479,13 @@
+ 		case DAHDI_TXSIG_OFFHOOK:
+ 			wc->mod[chan_entry].fxo.offhook = 1;
+ 			wctdm_setreg(wc, chan_entry, 5, 0x9);
++if(cidbeforering)
++			{
++				wc->cid_state[chan->chanpos - 1] = CID_STATE_IDLE;
++				wc->cid_history_clone_cnt[chan->chanpos - 1] = 0;
++				wc->cid_history_ptr[chan->chanpos - 1] = 0;
++				memset(wc->cid_history_buf[chan->chanpos - 1], DAHDI_LIN2X(0, chan), cidbuflen * DAHDI_MAX_CHUNKSIZE);
++			}			
+ 			break;
+ 		case DAHDI_TXSIG_ONHOOK:
+ 			wc->mod[chan_entry].fxo.offhook = 0;
+@@ -2362,11 +2512,9 @@
+ static int wctdm_initialize(struct wctdm *wc)
+ {
+ 	int x;
+-
+ 	wc->ddev = dahdi_create_device();
+ 	if (!wc->ddev)
+-		return -ENOMEM;
+-
++		return -ENOMEM;	
+ 	/* DAHDI stuff */
+ 	sprintf(wc->span.name, "WCTDM/%d", wc->pos);
+ 	snprintf(wc->span.desc, sizeof(wc->span.desc) - 1, "%s Board %d", wc->variety, wc->pos + 1);
+@@ -2379,8 +2527,7 @@
+ 		wc->ddev = NULL;
+ 		return -ENOMEM;
+ 	}
+-
+-	wc->ddev->manufacturer = "Digium";
++        wc->ddev->manufacturer = "Digium";
+ 	wc->ddev->devicetype = wc->variety;
+ 
+ 	if (alawoverride) {
+@@ -2398,15 +2545,18 @@
+ 	}
+ 	wc->span.chans = wc->chans;
+ 	wc->span.channels = NUM_CARDS;
++	
+ 	wc->span.flags = DAHDI_FLAG_RBS;
+ 	wc->span.ops = &wctdm_span_ops;
+ 
+-	list_add_tail(&wc->span.device_node, &wc->ddev->spans);
+-	if (dahdi_register_device(wc->ddev, &wc->dev->dev)) {
++
++        list_add_tail(&wc->span.device_node, &wc->ddev->spans);
++	if (dahdi_register_device(wc->ddev, &wc->dev->dev)) {	
+ 		printk(KERN_NOTICE "Unable to register span with DAHDI\n");
+-		kfree(wc->ddev->location);
++                kfree(wc->ddev->location);
+ 		dahdi_free_device(wc->ddev);
+ 		wc->ddev = NULL;
++		
+ 		return -1;
+ 	}
+ 	return 0;
+@@ -2694,14 +2844,27 @@
+ 					release_region(wc->ioaddr, 0xff);
+ 				pci_free_consistent(pdev, DAHDI_MAX_CHUNKSIZE * 2 * 2 * 2 * 4, (void *)wc->writechunk, wc->writedma);
+ 				pci_set_drvdata(pdev, NULL);
+-				dahdi_unregister_device(wc->ddev);
++                        	dahdi_unregister_device(wc->ddev);
+ 				kfree(wc->ddev->location);
+ 				dahdi_free_device(wc->ddev);
++				
+ 				kfree(wc);
+ 				return -EIO;
+ 
+ 			}
+-
++	if(cidbeforering) 
++			{		
++				int len = cidbuflen * DAHDI_MAX_CHUNKSIZE;
++				if(debug)
++					printk("cidbeforering support enabled, length is %d msec\n", cidbuflen);
++				for (x = 0; x < NUM_CARDS; x++) 
++				{
++					wc->cid_history_buf[x] = kmalloc(len, GFP_KERNEL);
++					wc->cid_history_ptr[x] = 0;
++					wc->cid_history_clone_cnt[x] = 0;
++					wc->cid_state[x] = CID_STATE_IDLE;
++				}
++			}
+ 			wctdm_post_initialize(wc);
+ 
+ 			/* Enable interrupts */
+@@ -2730,11 +2893,16 @@
+ 	dahdi_unregister_device(wc->ddev);
+ 	if (wc->freeregion)
+ 		release_region(wc->ioaddr, 0xff);
+-
+-	kfree(wc->ddev->location);
++        kfree(wc->ddev->location);
+ 	dahdi_free_device(wc->ddev);
++	
++if(cidbeforering) 
++	{
++		int x;
++		for (x = 0; x < NUM_CARDS; x++) 
++			kfree(wc->cid_history_buf[x]);
++	}	
+ 	kfree(wc);
+-
+ 	printk(KERN_INFO "Freed a Wildcard\n");
+ }
+ 
+@@ -2871,6 +3039,10 @@
+ module_param(fxorxgain, int, 0600);
+ module_param(fxstxgain, int, 0600);
+ module_param(fxsrxgain, int, 0600);
++module_param(cidbeforering, int, 0600);
++module_param(cidbuflen, int, 0600);
++module_param(cidtimeout, int, 0600);
++module_param(fixedtimepolarity, int, 0600);
+ 
+ MODULE_DESCRIPTION("Wildcard TDM400P Driver");
+ MODULE_AUTHOR("Mark Spencer <markster@digium.com>");

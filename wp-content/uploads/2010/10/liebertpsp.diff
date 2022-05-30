@@ -1,0 +1,105 @@
+Index: usbhid-ups.c
+===================================================================
+--- usbhid-ups.c	(revision 2519)
++++ usbhid-ups.c	(working copy)
+@@ -45,6 +45,7 @@
+ 	#include "liebert-hid.h"
+ 	#include "powercom-hid.h"
+ 	#include "tripplite-hid.h"
++	#include "liebertpsp-hid.h"
+ #endif
+ 
+ /* master list of avaiable subdrivers */
+@@ -60,6 +61,7 @@
+ 	&liebert_subdriver,
+ 	&powercom_subdriver,
+ 	&tripplite_subdriver,
++	&liebertpsp_subdriver,
+ #endif
+ 	NULL
+ };
+@@ -774,7 +776,8 @@
+ 			continue;
+ 
+ 		if (nut_debug_level >= 2) {
+-			upsdebugx(2, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %f",
++			//upsdebugx(2, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %f",
++			upsdebugx(2, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %g",
+ 				HIDGetDataItem(event[i], subdriver->utab),
+ 				HIDDataType(event[i]), event[i]->ReportID,
+ 				event[i]->Offset, event[i]->Size, value);
+@@ -1233,7 +1236,8 @@
+ 			continue;
+ 		}
+ 
+-		upsdebugx(2, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %f",
++		//upsdebugx(2, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %f",
++		upsdebugx(2, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %g",
+ 			item->hidpath, HIDDataType(item->hiddata), item->hiddata->ReportID,
+ 			item->hiddata->Offset, item->hiddata->Size, value);
+ 
+Index: Makefile.am
+===================================================================
+--- Makefile.am	(revision 2519)
++++ Makefile.am	(working copy)
+@@ -150,7 +150,7 @@
+ 
+ # USB
+ USBHID_UPS_SUBDRIVERS = apc-hid.c belkin-hid.c cps-hid.c explore-hid.c \
+- liebert-hid.c mge-hid.c powercom-hid.c tripplite-hid.c
++ liebert-hid.c mge-hid.c powercom-hid.c tripplite-hid.c liebertpsp-hid.c
+ usbhid_ups_SOURCES = usbhid-ups.c libhid.c libusb.c hidparser.c	\
+  usb-common.c $(USBHID_UPS_SUBDRIVERS)
+ usbhid_ups_LDADD = $(LDADD_DRIVERS) $(LIBUSB_LDFLAGS)
+@@ -219,8 +219,7 @@
+  mge-xml.h microdowell.h netvision-mib.h netxml-ups.h oneac.h		\
+  powercom.h powerpanel.h powerp-bin.h powerp-txt.h powerware-mib.h raritan-pdu-mib.h	\
+  safenet.h serial.h snmp-ups.h solis.h tripplite.h tripplite-hid.h 			\
+- upshandler.h usb-common.h usbhid-ups.h powercom-hid.h compaq-mib.h
+-
++ upshandler.h usb-common.h usbhid-ups.h powercom-hid.h compaq-mib.h liebertpsp-hid.h
+ # Define a dummy library so that Automake builds rules for the
+ # corresponding object files.  This library is not actually built,
+ EXTRA_LIBRARIES = libdummy.a
+Index: belkin-hid.c
+===================================================================
+--- belkin-hid.c	(revision 2519)
++++ belkin-hid.c	(working copy)
+@@ -34,7 +34,7 @@
+ #define BELKIN_VENDORID	0x050d
+ 
+ /* Liebert */
+-#define LIEBERT_VENDORID	0x10af
++#define LIEBERT_VENDORID	0x050e
+ 
+ /* USB IDs device table */
+ static usb_device_id_t belkin_usb_device_table[] = {
+@@ -58,7 +58,7 @@
+ 	{ USB_DEVICE(BELKIN_VENDORID, 0x1100), NULL },
+ 
+ 	/* Liebert PowerSure PSA UPS */
+-	{ USB_DEVICE(LIEBERT_VENDORID, 0x0001), NULL },
++	{ USB_DEVICE(LIEBERT_VENDORID, 0x0001), NULL }, 
+ 
+ 	/* Terminating entry */
+ 	{ -1, -1, NULL }
+Index: libhid.c
+===================================================================
+--- libhid.c	(revision 2519)
++++ libhid.c	(working copy)
+@@ -228,6 +228,7 @@
+ 		upsdebug_hex(3, "Report[err]", buf, buflen);
+ 	} else {
+ 		upsdebug_hex(3, "Report[int]", rbuf->data[id], rbuf->len[id]);
++		upsdebug_hex(2, "WILL:  ",rbuf->data[id], buflen);
+ 	}
+ 
+ 	/* have (valid) report */
+@@ -301,6 +302,7 @@
+ 		if (HIDGetDataValue(udev, pData, &value, MAX_TS) == 1) {
+ 			upsdebugx(1, "Path: %s, Type: %s, ReportID: 0x%02x, Offset: %i, Size: %i, Value: %f",
+ 				HIDGetDataItem(pData, utab), HIDDataType(pData), pData->ReportID, pData->Offset, pData->Size, value);
++			
+ 			continue;
+ 		}
+ 
