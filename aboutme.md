@@ -2,6 +2,7 @@
 layout: page
 title: About me
 subtitle: Hello chief let's talk, why not.
+cover-img: "/assets/img/flask.png"
 ---
 
 I'm Will Cooke.
