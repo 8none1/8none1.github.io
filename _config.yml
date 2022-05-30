@@ -105,7 +105,7 @@ defaults:
       layout: "page"
 
 
-theme: beautiful-jekyll-theme
+#theme: beautiful-jekyll-theme
 plugins:
 #  - jekyll-feed
   - jekyll-paginate
