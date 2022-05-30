@@ -24,8 +24,8 @@ email: blog@whizzy.org
 description: >- # this means to ignore newlines until "baseurl:"
   On code and gadgets
 
-# navbar-links:
-#   About Me: "aboutme"
+navbar-links:
+   About Me: "aboutme"
 #   Resources:
 #     - Beautiful Jekyll: "https://beautifuljekyll.com"
 #     - Learn markdown: "https://www.markdowntutorial.com/"
