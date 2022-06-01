@@ -17,7 +17,7 @@ As soon as it came to actually write a post, I found myself eager to avoid inter
 
 ## How I migrated from Wordpress to Jekyll
 
-I did indeed fire up the Wordpress VM, that went exactly as planned. But I installed the (https://en-gb.wordpress.org/plugins/jekyll-exporter/)[Jekyll Exporter] plug-in.  This was very easy.
+I did indeed fire up the Wordpress VM, that went exactly as planned. But I installed the [Jekyll Exporter](https://en-gb.wordpress.org/plugins/jekyll-exporter/) plug-in.  This was very easy.
 I installed it, clicked the `export` button and was given a zip file with all the text converted to markdown and images in a separate directory linked to correctly.
 In short, it just worked.
 
@@ -25,7 +25,7 @@ There were a few strange formatting errors, but I think this comes from Wordpres
 
 ## Hosting on GitHub
 
-GitHub will build and host your Jekyll site direct from a repo.  This is well documented.  I opted to use the (https://beautifuljekyll.com/)[Beautiful Jekyll] theme which has the option to clone the repo in GitHub and have everything else pre-configured.  I had some problems with this where GitHub wouldn't build the project because it couldn't find the theme.  This was very strange.  In the end I think I had broken the `_config` file.  Replacing it with the stock Beautiful Jekyll file and then updating it to match what I wanted worked.
+GitHub will build and host your Jekyll site direct from a repo.  This is well documented.  I opted to use the [Beautiful Jekyll](https://beautifuljekyll.com/) theme which has the option to clone the repo in GitHub and have everything else pre-configured.  I had some problems with this where GitHub wouldn't build the project because it couldn't find the theme.  This was very strange.  In the end I think I had broken the `_config` file.  Replacing it with the stock Beautiful Jekyll file and then updating it to match what I wanted worked.
 
 ## Changes I made
 
