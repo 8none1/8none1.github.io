@@ -5,6 +5,7 @@ date: '2022-06-01T08:24:00+01:00'
 author: will
 categories:
     - 'Making the world a better place'
+highlighter: none
 ---
 
 You live and learn.
@@ -35,6 +36,7 @@ I reused the `tags` logic to also display `categories` like this:
 
 1. edit `_layouts/home.html` to include this.  It's a copy and paste of the tags handler updated to refer to categories instead.
 
+{% raw %}
 ```html
     {% if site.feed_show_tags != false and post.categories.size > 0 %}
     <div class="blog-tags">
@@ -45,9 +47,11 @@ I reused the `tags` logic to also display `categories` like this:
     </div>
     {% endif %}
 ```
+{% endraw %}
 
 2. Create a new `categories.html` page.  This allows you to list all the categories in use:
 
+{% raw %}
 ```html
 ---
 layout: page
@@ -86,6 +90,10 @@ title: 'Category Index'
 {%- endfor -%}
 </div>
 ```
+{% endraw %}
+
+
+I also [disabled the syntax highlighting](https://docs.github.com/en/enterprise-cloud@latest/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll).  I found this to be visually noisy and not especially helpful. 
 
 ## First impressions
 
