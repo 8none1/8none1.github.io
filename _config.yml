@@ -45,6 +45,7 @@ social-network-links:
   rss: true  # remove this line if you don't want to show an RSS link at the bottom
   github: 8none1
   twitter: 8none1
+  mastodon: fosstodon.org/@8none1
 
 rss-description: whizzy.org RSS feed
 

@@ -17,6 +17,8 @@ I'm part of the [Late Night Linux](https://latenightlinux.com) podcast team.  We
 
 My amateur radio callsign is M7WZY.
 
+I'm on [Fosstodon](https://fosstodon.org/@8none1).
+
 I'm on [Twitter](https://twitter.com/8none1).
 
 I'm on [GitHub](https://github.com/8none1).
@@ -25,6 +27,4 @@ I'm on [LinkedIn](https://www.linkedin.com/in/will-cooke-64b69417/).
 
 I'm on [Telegram](https://t.me/willcooke).
 
-I also like home automation, plumbing, electrics and electronics, golf, craft beer, chicken wings and looking at graphs.
-
-
+I also like home automation, Internet connected things, plumbing, electrics and electronics, golf, craft beer, chicken wings and looking at graphs.
