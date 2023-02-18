@@ -76,11 +76,11 @@ from(bucket: "<your bucket>")
     |> group() // We re-group in to one table
     |> drop(columns: ["host", "serialNumber", "topic"]) // and remove data we don't need to shrink the size a bit.
     |> window(every: 30m) // Now we re-divide the tables in to 30 minute chunks as used by Octopus
-    |> integral(unit: 30m) // and calculate the total kW used during that period with `integral`
+    |> integral(unit: 60m) // and calculate the total Wh used during that period with `integral`
     |> group() // re-group in to a single table
-    |> map(fn: (r) => ({r with _value: r._value / 1000.0})) // and convert watts to kW
+    |> map(fn: (r) => ({r with _value: r._value / 1000.0})) // and convert watts to kWh
 ```
-If you wanted this in kWh instead of 30 mins, change 30m to 1h and it should just work.
+
 
 ## Next steps
 
