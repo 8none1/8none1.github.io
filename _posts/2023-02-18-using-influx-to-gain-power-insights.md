@@ -40,11 +40,11 @@ Once in InfluxDB I can build dashboards to visualise the data in the way that I 
 ## Processing the data
 
 Octopus Energy are a progressive energy company who offer a number of tariffs which have the potential to save you money.  You have to do your homework first though.
-A couple of tariffs of interest to me are Agile Octopus and Octopus Flex.
+A couple of tariffs of interest to me are Agile Octopus and Octopus Flux.
 
 Agile gives you advance warning of the cost of electricity broken down in to 30 min blocks each day.  If you have a battery or solar panels and are able to avoid using power during the peak periods you could bring the average cost per kWh down to something like 29p per kWh (saving about 25%).
 
-Flex gives you 3 hours off-peak (2am to 5am) of electricity at 21p kWh, a normal rate of 35p kWh and a super-peak (4pm to 7pm) at 49p kWh.  If you can charge your battery during the off-peak time and avoid the super-peak period altogether, maybe this will work out cheaper in the long run?  Flex also gives very good export rates, but I'm not factoring that in just yet.  Octopus seem to let you change between tariffs without protracted lock-in periods.
+Flux gives you 3 hours off-peak (2am to 5am) of electricity at 21p kWh, a normal rate of 35p kWh and a super-peak (4pm to 7pm) at 49p kWh.  If you can charge your battery during the off-peak time and avoid the super-peak period altogether, maybe this will work out cheaper in the long run?  Flux also gives very good export rates, but I'm not factoring that in just yet.  Octopus seem to let you change between tariffs without protracted lock-in periods.
 
 My expectation is that these tariffs will have been designed so that they are very closely matched in cost to the average consumer. But, there's only one way to find out which is best for me.
 
