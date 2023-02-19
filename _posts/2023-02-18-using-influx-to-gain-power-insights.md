@@ -27,7 +27,7 @@ One of the nice things about the Growatt inverters is the management system.  Yo
 People have created custom firmware for these dongles to allow you to output that data to MQTT for use in your own system.  Check out this Github project for more information:  https://github.com/octal-ip/ESP07_Growatt_SPF_3500-5000_ES_Monitor
 I think it's specific to the SPF line of inverters but could be easily adapted to support SPH inverters if needed.
 
-I have taken a different route.  The inverter also includes an RS485 port which you can use at the same time as the wifi dongle.  I purchased an Elfin EW11 wifi to RS485 bridge and wrote a small integration for Node-RED to gather the metrics I need.  You can read more information about that project in this Github repo:  (https://github.com/8none1/growatt_sph_nodered)
+I have taken a different route.  The inverter also includes an RS485 port which you can use at the same time as the wifi dongle.  I purchased an Elfin EW11 wifi to RS485 bridge and wrote a small integration for Node-RED to gather the metrics I need.  You can read more information about that project in this Github repo:  [https://github.com/8none1/growatt_sph_nodered](https://github.com/8none1/growatt_sph_nodered)
 
 The end result is that I have my metrics being gathered every 30 seconds from the inverter, converted in to a JSON payload and sent to MQTT.  The I use Telegraf to collect the metrics and send them in to InfluxDB Cloud 2.
 
