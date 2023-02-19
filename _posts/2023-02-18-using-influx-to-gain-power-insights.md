@@ -85,5 +85,5 @@ from(bucket: "<your bucket>")
 ## Next steps
 
 Now I have the data I can easily create a spreadsheet to calculate the costs for a typical day.  I'll write that up next time.
-Meanwhile, I like Tim's videos on YouTube creating a spreadsheet to end all spreadsheets for Octopus calculations.  At the time of writing this is most up-to-date one:  [https://www.youtube.com/watch?v=iLFrykG49Uk](https://www.youtube.com/watch?v=iLFrykG49Uk)
+Meanwhile, I like Tim's videos on YouTube where he is creating a spreadsheet to end all spreadsheets for Octopus calculations.  At the time of writing this is most up-to-date one:  [https://www.youtube.com/watch?v=iLFrykG49Uk](https://www.youtube.com/watch?v=iLFrykG49Uk)
 
