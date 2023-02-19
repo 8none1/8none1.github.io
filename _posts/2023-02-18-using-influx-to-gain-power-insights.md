@@ -24,7 +24,7 @@ Growatt are manufacturers of well priced, decently spec'd solar inverters and ba
 
 One of the nice things about the Growatt inverters is the management system.  You purchase a wifi dongle which connects to the inverter and sends the data off to Growatt.  You can then log in to a web based system and get graphs of all the metrics you need and apply configuration changes remotely.  They also provide an app.
 
-People have created custom firmware for these dongles to allow you to output that data to MQTT for use in your own system.  Check out this Github project for more information:  https://github.com/octal-ip/ESP07_Growatt_SPF_3500-5000_ES_Monitor
+People have created custom firmware for these dongles to allow you to output that data to MQTT for use in your own system.  Check out this Github project for more information:  [https://github.com/octal-ip/ESP07_Growatt_SPF_3500-5000_ES_Monitor](https://github.com/octal-ip/ESP07_Growatt_SPF_3500-5000_ES_Monitor)
 I think it's specific to the SPF line of inverters but could be easily adapted to support SPH inverters if needed.
 
 I have taken a different route.  The inverter also includes an RS485 port which you can use at the same time as the wifi dongle.  I purchased an Elfin EW11 wifi to RS485 bridge and wrote a small integration for Node-RED to gather the metrics I need.  You can read more information about that project in this Github repo:  [https://github.com/8none1/growatt_sph_nodered](https://github.com/8none1/growatt_sph_nodered)
@@ -85,5 +85,5 @@ from(bucket: "<your bucket>")
 ## Next steps
 
 Now I have the data I can easily create a spreadsheet to calculate the costs for a typical day.  I'll write that up next time.
-Meanwhile, I like Tim's videos on YouTube creating a spreadsheet to end all spreadsheets for Octopus calculations.  At the time of writing this is most up-to-date one:  https://www.youtube.com/watch?v=iLFrykG49Uk
+Meanwhile, I like Tim's videos on YouTube creating a spreadsheet to end all spreadsheets for Octopus calculations.  At the time of writing this is most up-to-date one:  [https://www.youtube.com/watch?v=iLFrykG49Uk](https://www.youtube.com/watch?v=iLFrykG49Uk)
 
