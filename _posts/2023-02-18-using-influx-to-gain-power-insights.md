@@ -16,7 +16,7 @@ In the UK wholesale electricity prices are tightly coupled to gas prices.  This 
 
 For around £16,000 you could install a 9kWp solar system and around 13 kWh of battery storage.  On my east facing array in December, solar was able to provide around 30% of my electricity needs.  When coupled with a battery, one could import off-peak electricity to fill most of the gap. Some days would be better than others, but it should all work out in the end.  For around half the year I expect to be importing zero electricity from the grid during peak times. In fact I expect to be a net exporter of electricity from around May to September but I haven't had the panels up long enough to know for sure. 
 
-Solar panel installs currently benefit from zero VAT.  This is a good thing of course, but imagine if the government gave every household a £5000 grant for a solar panel system of any size.
+Solar panel installs currently benefit from zero VAT.  This is a good thing of course, but imagine if the government gave every household a £5000 grant for a solar panel or battery system of any size.
 
 ## Gathering the data - Growatt SPH Inverters
 
