@@ -2,7 +2,7 @@
 
 Over four years ago [Stuart wrote about](https://www.kryogenix.org/days/2019/04/01/the-ray-traced-pictures/) a twenty year search to track down an old sound sample from the Acorn Archimedes.
 
-And today, 20 years two months and one week after this search began, the final (?) chapter of this story is over.  A demo appeared on [YouTube](https://www.youtube.com/watch?v=LR98lmARCAo) which shows a demo made for Clares by David Hoskins in 1988.  This demo is the original source of the sample.
+And today, 20 years two months and one week after this search began, the final (?) chapter of this story is over.  A video appeared on [YouTube](https://www.youtube.com/watch?v=LR98lmARCAo) which shows a demo made for Clares by David Hoskins in 1988.  This demo is the original source of the sample.
 
 There is a very high likelihood that this tale means something to only three people in all of the history of mankind.
 
