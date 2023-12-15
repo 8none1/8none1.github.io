@@ -4,13 +4,17 @@ If a device communicates via Bluetooth LE and has an app, it deserves to be inte
 
 I've spent a significant amount of time reverse engineering various budget-friendly LED light strips to automate them. The process is generally repetitive, but I find it enjoyable. Recently, I successfully connected the cheapest lights I've ever come across — a £2.38 Bluetooth LE-controlled 5M non-addressable strip — to Home Assistant in just a few hours. You can buy some [here](https://www.aliexpress.com/item/1005005485885067.html) and the code is [here](https://github.com/8none1/bj_led).
 
+There is also the LEDnetWF controller I did the reverse engineering for [here](https://github.com/raulgbcr/lednetwf_ble).
+
+![AliExpress Lights](/wp-content/uploads/2023/12/ha.jpg){:class="img-responsive"}
+
 I also had another set of addressable lights on my desk. While decorating my office for Christmas, I decided to invest some time in connecting them to Home Assistant using the BJ_LED code as a template. It should have been straightforward, right? Well, yes, but also no.
 
 These lights consist of a 10M long string of addressable LEDs controlled by the "iDeal LED" app. The app is feature-rich and works reasonably well. The LEDs are likely WS2812 or similar. I was quite pleased with these lights, which you can [find on AliExpress](https://www.aliexpress.com/item/1005004829475855.html).
 
 ![AliExpress Lights](/wp-content/uploads/2023/12/aliex_lights.jpg){:class="img-responsive"}
 
-Now, let me share a cautionary tale. While I'm omitting some details for brevity, there are no secrets here, and additional instructions are readily available online. I understand this might feel a bit like "drawing the rest of the owl," but the provided links should serve as a starting point for anyone interested in reverse engineering their own LED lights.
+Now, let me share a cautionary tale. While I'm omitting some details for brevity, there are no secrets here, and additional instructions are readily available online. I understand this might feel a bit like [drawing the rest of the owl](https://knowyourmeme.com/memes/how-to-draw-an-owl) but the provided links should serve as a starting point for anyone interested in reverse engineering their own LED lights.
 
 ## Step 1. The bytes over the wire
 
@@ -34,7 +38,7 @@ Change MAC address to be the MAC of your lights.  `btatt.opcode.method==0x12` is
 
 Congratulations, you are now a reverse engineer!
 
-==Pro-tip:  You can speed things up a bit by using [tshark](https://tshark.dev/) instead of Wireshark.  What you really care about is the values being written to the LED controller.  `tshark -r <filename> -T fields -e btatt.value` will dump the payload to the terminal for easy interrogation.==
+Pro-tip:  You can speed things up a bit by using [tshark](https://tshark.dev/) instead of Wireshark.  What you really care about is the values being written to the LED controller.  `tshark -r <filename> -T fields -e btatt.value` will dump the payload to the terminal for easy interrogation.
 
 Sometimes your bytes will look like this:
 
@@ -188,5 +192,4 @@ All is not lost however.  The LEDs themselves are standard addressable LEDs so I
 
 Despite the setback, I documented most of the protocol and created a Github project with a Home Assistant custom component. It works, but proceed at your own risk.
 
-(https://github.com/8none1/idealLED)
-
+[https://github.com/8none1/idealLED]
