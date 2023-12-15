@@ -6,7 +6,7 @@ I've spent quite a lot of time reverse engineering various cheap and cheerful LE
 <https://github.com/8none1/bj_led>
 
 I've had another set of addressable lights sat on my desk for a while and when I was decorating my office for Christmas I thought I'd spend a little bit of time getting them hooked up to Home Assistant using the BJ_LED code as a template.  Should be pretty easy, right?  Well, yes.  But also no.
-These lights are a 10M long string of addressable LEDs and are controlled by the "iDeal LED" app.  The app is quite full featured and works well enough. The LEDs are, I think, WS2812 or similar.  I am, or rather was, quite please with these lights.  You can [get them on AliExpress](https://www.aliexpress.com/item/1005004829475855.html) of course.
+These lights are a 10M long string of addressable LEDs and are controlled by the "iDeal LED" app.  The app is quite full featured and works well enough. The LEDs are, I think, WS2812 or similar.  I am, or rather was, quite pleased with these lights.  You can [get them on AliExpress](https://www.aliexpress.com/item/1005004829475855.html) of course.
 
 ![](/wp-content/uploads/2023/12/aliex_lights.jpg){:class="img-responsive"}
 
@@ -16,10 +16,16 @@ There now follows a cautionary tale.  A lot of the details have been left out fo
 
 The first step towards controlling the devices from your own software is to look at the bytes being sent over Bluetooth to the device from the app.  Very often the lights talk a simple protocol consisting of a number of bytes forming a header, some command bytes (turn on, turn off, change colour, etc) and a footer which is sometimes a checksum and often ignored.
 
-Android makes this really easy for you.  On an Android device with developer mode enabled install the app for your lights.  On your computer, install [adb](https://developer.android.com/tools/adb).
+Android makes this really easy for you.  On an Android device with developer mode enabled install the app for your lights.
+
+On your computer, install [adb](https://developer.android.com/tools/adb).
+
 On Android, go in to the developer settings and enable `Bluetooth HCI snoop`. This will log the Bluetooth bytes to a file which can be understood by [Wireshark](https://www.wireshark.org/).
+
 Open the lights app and do something.  I suggest you start simple; turn the lights on and off five times.
+
 Use `adb` to copy the logs to your computer. e.g. `adb pull sdcard/btsnoop_hci.log .`
+
 Open that file up in Wireshark and you can see the exact bytes being sent to the device.  If you look at the values being sent you should be able to spot a pattern.  You're likely to find that for each time you turned the lights on or off a series of bytes was sent over the wire, and one of those byes would alternate between two values, probably a `1` and a `0`.  Representing on and off.  A useful Wireshark filter to apply would be something like:
 
 ```text
@@ -129,7 +135,7 @@ When we try and decrypt the `on` and `off` packets we get:
 05 54 55 52 4E 00 00 00 00 00 00 00 00 00 00 00
 ```
 
-Success!  This is a lot more sensible.  A fixed header, byte 5 switching between a 1 and a 0 for on and off, and a bunch of zeros.
+Success!  This is a lot more sensible.  A fixed header, byte 5 switching between a `1` and a `0` for on and off, and a bunch of zeros.
 
 We can now decrypt all the packets being sent to the device and we can encrypt our own bytes so that we can duplicate the controls from the Android app in our own code.  It's pretty much mission accomplished at this point.
 
@@ -166,7 +172,7 @@ If you have used `jadx` you can search the source code for the bytes you see and
 
 ## Step 5.  Automated e-waste generator
 
-While I was working out all the functions of these lights I noticed that when changing the colours the maximum value ever sent from the app for red, green or blue was 0x1F, which is a 5 bit number.  I've seen devices which use 5 bit colour before, but never in a set of cheapo LED lights, they are always 8 bit RGB or HSV.  That's odd, but OK.
+While I was working out all the functions of these lights I noticed that when changing the colours the maximum value ever sent from the app for red, green or blue was `0x1F`, which is a 5 bit number.  I've seen devices which use 5 bit colour before, but never in a set of cheapo LED lights, they are always 8 bit RGB or HSV.  That's odd, but OK.
 
 Once I'd finished working out the rest of the functions I needed I went back to try something... what if I sent an 8 bit value for the colours instead?  All the colours used when setting an effect mode are 8 bit, so it might work.  Let's try it...
 
@@ -178,7 +184,7 @@ A good way to try this out would be a simple loop, right?
 ```python
     for n in range(20):
         print(f"Setting effect {n}")
-        set_effect(n, colour_data=build_colour_data_packet(build_rainbow_colour_list(7)))
+        set_effect(n)
         time.sleep(20)
 ```
 
@@ -191,9 +197,8 @@ And that was then end of my fun.  The lights never came back.  They don't advert
 
 All is not lost however.  The LEDs themselves are standard addressable LEDs so I can at least hook the string up to a different microcontroller and use them.
 
-## I want to break my own lights
+## Tell me how I can break my own lights
 
 I did at least get most of the protocol worked out and have a Github project with a Home Assistant custom component in.  It works, but ya know, try it at your own risk.
 
-https://github.com/8none1/idealLED
-
+(https://github.com/8none1/idealLED)
