@@ -192,4 +192,4 @@ All is not lost however.  The LEDs themselves are standard addressable LEDs so I
 
 Despite the setback, I documented most of the protocol and created a Github project with a Home Assistant custom component. It works, but proceed at your own risk.
 
-[https://github.com/8none1/idealLED]
+[Github: 8none1/idealLED](https://github.com/8none1/idealLED)
