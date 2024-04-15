@@ -2,7 +2,7 @@
 
 If a device communicates via Bluetooth LE and has an app, it deserves to be integrated into my home automation system.
 
-I've spent a significant amount of time reverse engineering various budget-friendly LED light strips to automate them. The process is generally repetitive, but I find it enjoyable. Recently, I successfully connected the cheapest lights I've ever come across — a £2.38 Bluetooth LE-controlled 5M non-addressable strip — to Home Assistant in just a few hours. You can buy some [here](https://www.aliexpress.com/item/1005005485885067.html) and the code is [here](https://github.com/8none1/bj_led).
+I've spent a significant amount of time reverse engineering various budget-friendly LED light strips to automate them. The process is generally repetitive, but I find it enjoyable. Recently, I successfully connected the cheapest lights I've ever come across — a £2.38 Bluetooth LE-controlled 5M non-addressable strip — to Home Assistant in just a few hours. You can buy some [here](https://s.click.aliexpress.com/e/_DF5fWnr) and the code is [here](https://github.com/8none1/bj_led).
 
 There is also the LEDnetWF controller I did the reverse engineering for [here](https://github.com/raulgbcr/lednetwf_ble).
 
@@ -10,7 +10,7 @@ There is also the LEDnetWF controller I did the reverse engineering for [here](h
 
 I also had another set of addressable lights on my desk. While decorating my office for Christmas, I decided to invest some time in connecting them to Home Assistant using the BJ_LED code as a template. It should have been straightforward, right? Well, yes, but also no.
 
-These lights consist of a 10M long string of addressable LEDs controlled by the "iDeal LED" app. The app is feature-rich and works reasonably well. The LEDs are likely WS2812 or similar. I was quite pleased with these lights, which you can [find on AliExpress](https://www.aliexpress.com/item/1005004829475855.html).
+These lights consist of a 10M long string of addressable LEDs controlled by the "iDeal LED" app. The app is feature-rich and works reasonably well. The LEDs are likely WS2812 or similar. I was quite pleased with these lights, which you can [find on AliExpress](https://s.click.aliexpress.com/e/_DF8yilL).
 
 ![AliExpress Lights](/wp-content/uploads/2023/12/aliex_lights.jpg){:class="img-responsive"}
 
