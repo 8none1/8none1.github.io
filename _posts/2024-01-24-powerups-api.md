@@ -39,3 +39,81 @@ will return an array containing the first 3 matching email objects.
 
 
 [^2]: Yes, this is very fragile.  But at least it was quick.
+
+Once we have found the email we need to extract the start and end times from it.  As much as I hate regexs for this sort of thing, it seems like the fastest way to achieve what I want.
+Most of the time the emails from Octopus follow exactly the same format, but sometimes they don't.  So this will never be a perfect solution.  It's proved reliable so far though.
+
+We find the data we want like this:
+
+1. Extract the subject line for the emails that match the above with `message.getSubject()`
+1. Use this regex to match the expected format: `subject_line_regex = /.*[0-9]{2}\/[0-9]{2}\/(?:\d{4}|\d{2})/s`
+1. Use this regex to match the start time: `/(?<=at )([0-9]{2}|[0-9]):[0-9]{2} (AM|PM)/i`
+1. Use this regex to match the end time: `/(?<= - )([0-9]{2}|[0-9]):[0-9]{2} (AM|PM)/i`
+1. Use this regex to match the date: `/([0-9]{2}|[0-9])\/([0-9]{2}|[0-9])\/(?:\d{4}|\d{2})/`
+
+We can use this data to build a JSON object which will hold the start and end times of future PowerUps.
+
+## Publishing the data
+
+Now we have a programmatic source of PowerUp data we can publish it for others to use.  That is done here: <https://www.whizzy.org/octopus_powerups/powerup.json>
+
+That JSON file will hold a list of any known future PowerUps.
+
+## Home Assistant
+
+I have defined two sensors to consume this data.
+
+First is a REST sensor to parse the JSON file and make it available inside HA:
+
+```yaml
+  - platform: rest
+    name: "Power Up Times"
+    resource: "https://www.whizzy.org/octopus_powerups/powerup.json"
+    scan_interval: 900
+    json_attributes_path: "$.[0]"
+    json_attributes:
+      - start
+      - end
+```
+
+Every 900 seconds this will pull the JSON file, extract the first list element and get the start and end times in to attributes.
+
+We can then use this to create a sensor which turns on and off at the start and end of the PowerUp.
+
+```yaml
+    - name: "Power Up In Progress"
+      state: >
+        {% set n = now() | as_timestamp %}
+        {% set st  = state_attr('sensor.power_up_times', 'start') | as_timestamp %}
+        {% set end = state_attr('sensor.power_up_times', 'end')   | as_timestamp %}
+        {% if n >= st and n < end %}
+          True
+        {% else %}
+          False
+        {% endif %}
+      attributes:
+        duration_mins: >
+          {% set st  = state_attr('sensor.power_up_times', 'start') | as_timestamp %}
+          {% set end = state_attr('sensor.power_up_times', 'end')   | as_timestamp %}
+          {{ ((end - st) / 60) | int }}
+        duration_remaining: >
+          {% if this.state == 'on' %}
+            {% set n = now() | as_timestamp %}
+            {% set end = state_attr('sensor.power_up_times', 'end') | as_timestamp %}
+            {{ ((end - n) / 60) | int }}
+          {% else %}
+            {{ False }}
+          {% endif %}
+        start_time: "{{state_attr('sensor.power_up_times', 'start') | as_datetime }}"
+        end_time: "{{state_attr('sensor.power_up_times', 'end') | as_datetime }}"
+```
+
+And with that we can trigger all kinds of automations at the start and end of the PowerUp.
+
+## Use the data
+
+The JSON file is hosted on Github via this project: <https://github.com/8none1/octopus_powerups>
+
+A permalink to the JSON file is here: <https://www.whizzy.org/octopus_powerups/powerup.json>
+
+You do still have to manually opt in to the PowerUp from the link in the email.  I think this is automateable too, but I have't tried.  Report back if you do it!
