@@ -80,6 +80,7 @@ Every 900 seconds this will pull the JSON file, extract the first list element a
 
 We can then use this to create a sensor which turns on and off at the start and end of the PowerUp.
 
+{% raw %}
 ```yaml
     - name: "Power Up In Progress"
       state: >
@@ -107,6 +108,7 @@ We can then use this to create a sensor which turns on and off at the start and 
         start_time: "{{state_attr('sensor.power_up_times', 'start') | as_datetime }}"
         end_time: "{{state_attr('sensor.power_up_times', 'end') | as_datetime }}"
 ```
+{% endraw %}
 
 And with that we can trigger all kinds of automations at the start and end of the PowerUp.
 
