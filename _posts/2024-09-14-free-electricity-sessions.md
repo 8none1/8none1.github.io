@@ -30,7 +30,7 @@ Here is an example:
 [{"start":"2024-09-14T12:00:00.000Z","end":"2024-09-14T13:00:00.000Z"}]
 ```
 
-As you can see, this is a list with one element.  The element contains the start time and end time `datetime` strings in the UTC timezone.  The timing picked up from the Octopus emails is converted to UTC.  This makes dealing with daylights savings a lot easier, and it's also easy to deal with this in Home Assistant.
+As you can see, this is a list with one element.  The element contains the start time and end time `datetime` strings in the UTC timezone.  The timing picked up from the Octopus emails is converted to UTC.  This makes dealing with daylight savings a lot easier, and it's also easy to deal with this in Home Assistant.
 In the case where there are multiple sessions the list will contain an element for each session up to a maximum of three.  They will always be ordered from soonest to latest.  When one session ends it will be removed from the list within one hour.  When there are no sessions left it will revert to `null` entries.
 
 The Home Assistant sensors detailed below can be used for either data source. If you want to use both, then you should create one full set of sensors for each data source, with some tweaks like changing the name etc.
