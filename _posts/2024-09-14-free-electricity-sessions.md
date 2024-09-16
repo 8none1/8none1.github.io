@@ -2,12 +2,16 @@
 
 ## Octopus Power Ups and Free Electricity Session API
 
-Octopus Power Ups and Octopus Free Electricity sessions don't, currently, have official API support.  Instead you get sent an email a day or so before the session starts with details of the times.  This is fine for normal people, but what if you've got a smart home with an electric car charger, or an electric immersion heater, or a large battery coupled with your solar system?  How can you automate actions like battery charging when the electricity is free?
+[Octopus Power Ups](https://octopus.energy/power-ups/) and [Free Electricity Sessions](https://octopus.energy/free-electricity/) don't, currently, have official API support.  Instead you get sent an email a day or so before the session starts with details of the times.  This is fine for normal people, but what if you've got a smart home with an electric car charger, or an electric immersion heater, or a large battery coupled with your solar system?  How can you automate actions like battery charging when the electricity is free?
 
-I have created a set of Google Apps Script scripts which scrape the email and then convert it to a JSON object containing a standard `datetime` for the start and end of the sessions.  This JSON object is publicly available hosted on Github's infrastructure, and you can make free use of it to integrate in to Home Assistant.  You can read more about how that works here: (<https://www.whizzy.org/2024-01-24-powerups-api/>)
-The script has correctly dealt with the changing formats used by Octopus in their emails, and we will with daylight savings, strange durations, etc.  It's been robust so far.
+I have created a set of Google Apps Scripts which scrape the email and then convert it to a JSON list of objects containing a standard `datetime` formatted string for the start and end of the sessions.  This JSON file is publicly available hosted on Github's infrastructure, and you can make free use of it to integrate in to Home Assistant.  You can read more about how it works here: <https://www.whizzy.org/2024-01-24-powerups-api/>
 
-Everyone has different requirements from their Home Assistant automations, but I thought it would be worth writing up how I do it to demonstrate how straight forward it can be, and how flexible it is.  You will have to edit your `configuration.yaml` though.  But trust me, it's not scary.
+The script has correctly dealt with the changing formats used by Octopus in their emails, and with daylight savings, strange durations, etc.  It's been very robust so far, and I have a vested interest in keeping it working.
+The goal is to provide a reliable service which is simple to integrate in to your own Home Assistant set up.
+
+Everyone has different requirements from their Home Assistant automations, so I thought it would be worth writing up how I do it as a worked example.
+
+You will have to edit your configuration yaml though.  But trust me, it's not scary.
 
 ## 1. The JSON object data source
 
@@ -20,7 +24,7 @@ There are two JSON files:
 
 The first one contains information about Power Ups in the eastern part of the [UK Power Networks](https://www.ukpowernetworks.co.uk/) region.  If you live in "the east of England" then you're /probably/ in this area.  I live in Bedfordshire, and my friend in Suffolk usually has the same Power Ups as me, but there has been one instance where he had one and I didn't.  *Note:*  if you use this data source to get information about Power Ups you must still complete the form in the email from Octopus in order to qualify.  This is a requirement of Octopus.
 
-The second file contains details of Octopus Free Electricity Sessions.  These are nationwide and do not need you to complete a form.  Once you're registered with Octoplus you get the Free Electricity Session.
+The second file contains details of Octopus [Free Electricity Sessions](https://octopus.energy/free-electricity/).  These are nationwide and do not need you to complete a form.  Once you're registered with [Octoplus](https://octopus.energy/octoplus/) you get the Free Electricity Session.
 
 Most of the time the JSON objects at these URLs will contain `null` data, because there isn't a Power Up or Free Electricity Session known.  As soon as one (or more) is known about, then the JSON object will be a list of JSON objects.  Each object contains two keys: `start` and `end`.
 
@@ -30,7 +34,7 @@ Here is an example:
 [{"start":"2024-09-14T12:00:00.000Z","end":"2024-09-14T13:00:00.000Z"}]
 ```
 
-As you can see, this is a list with one element.  The element contains the start time and end time `datetime` strings in the UTC timezone.  The timing picked up from the Octopus emails is converted to UTC.  This makes dealing with daylight savings a lot easier, and it's also easy to deal with this in Home Assistant.
+As you can see, this is a list with one element.  The element contains the start time and end time `datetime` strings in the UTC timezone.  The timing picked up from the Octopus emails is converted from local time to UTC.  This makes dealing with daylight savings a lot easier, and it's also easy to deal with this in Home Assistant.
 In the case where there are multiple sessions the list will contain an element for each session up to a maximum of three.  They will always be ordered from soonest to latest.  When one session ends it will be removed from the list within one hour.  When there are no sessions left it will revert to `null` entries.
 
 The Home Assistant sensors detailed below can be used for either data source. If you want to use both, then you should create one full set of sensors for each data source, with some tweaks like changing the name etc.
