@@ -28,4 +28,4 @@ I’ve also got a Hauppauge S2 HD and this patched driver doesn’t seem to effe
 
 Search hints:
 
-Hauppauge Nova S plus linux won’t lock horizontal 22khz tone can’t pick up some channels. You can also check out my guide on [<font color="#555555">Everything You Need to Set Up a Backyard Cinema</font>](http://outdoormoviehq.com/ultimate-guide-to-outdoor-movies/).
+Hauppauge Nova S plus linux won’t lock horizontal 22khz tone can’t pick up some channels.
