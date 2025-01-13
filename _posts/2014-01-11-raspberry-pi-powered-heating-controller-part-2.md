@@ -26,6 +26,7 @@ I ordered all the parts and now I’ve plugged them all together. Here’s a qui
 
 ## Further Updates
 
-- [Part 1](http://www.whizzy.org/2014/01/raspberry-pi-powered-heating-controller-part-1/ "Raspberry Pi powered heating controller (Part 1)")
-- [Part 3](http://www.whizzy.org/2014/01/raspberry-pi-powered-heating-controller-part-3/ "Raspberry Pi powered heating controller (Part 3)")
-- [Part 4](http://www.whizzy.org/2014/02/raspberry-pi-powered-heating-controller-part-4/ "Raspberry Pi powered heating controller (Part 4)")
+- [Part 1](https://www.whizzy.org/2014/01/04/raspberry-pi-powered-heating-controller-part-1/ "Raspberry Pi powered heating controller (Part 1)")
+- [Part 2](https://www.whizzy.org/2014/01/11/raspberry-pi-powered-heating-controller-part-2/ "Raspberry Pi powered heating controller (Part 2)")
+- [Part 3](https://www.whizzy.org/2014/01/27/raspberry-pi-powered-heating-controller-part-3/ "Raspberry Pi powered heating controller (Part 3)")
+- [Part 4](https://www.whizzy.org/2014/02/04/raspberry-pi-powered-heating-controller-part-4/ "Raspberry Pi powered heating controller (Part 4)")
