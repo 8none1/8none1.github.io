@@ -9,7 +9,9 @@ I'm Will Cooke.
 
 I like computers.
 
-I work at [InfluxData](https://www.influxdata.com) as the director of engineering for the storage engine and write-path.
+I work at [Chainguard](https://www.chainguard.dev/) on the OS team.  [We're hiring](https://www.chainguard.dev/careers), join us.
+
+I used to work at [InfluxData](https://www.influxdata.com) as the director of engineering for the storage engine and write-path.
 
 I used to work at [Canonical](https://www.canonical.com) as the director of Ubuntu Desktop.  I still use Ubuntu all day every day.
 
@@ -27,4 +29,4 @@ I'm on [LinkedIn](https://www.linkedin.com/in/will-cooke-64b69417/).
 
 I'm on [Telegram](https://t.me/willcooke).
 
-I also like home automation, Internet connected things, plumbing, electrics and electronics, golf, craft beer, chicken wings and looking at graphs.
+I also like home automation, Internet connected things, plumbing, electrics and electronics, flying, craft beer, chicken wings and looking at graphs.
