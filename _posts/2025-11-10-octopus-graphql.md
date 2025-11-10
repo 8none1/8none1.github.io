@@ -1,6 +1,9 @@
-# Octopus Energy Free Electricity Sessions: Official GraphQL API!
-
-*Posted on 10 November 2025*
+---
+layout: post
+title: "Octopus Energy Free Electricity Sessions: Official GraphQL API!"
+date: 2025-11-10
+tags: [octopus-energy, home-assistant, api, graphql, automation]
+---
 
 ## TL;DR
 
@@ -124,6 +127,7 @@ This sensor polls the official Octopus Energy API data every 15 minutes.
 
 Add to your `configuration.yaml`:
 
+{% raw %}
 ```yaml
 template:
   - binary_sensor:
@@ -155,6 +159,7 @@ template:
           end_time: "{{state_attr('sensor.free_electricity_session_times', 'end') | as_datetime }}"
           event_code: "{{state_attr('sensor.free_electricity_session_times', 'code')}}"
 ```
+{% endraw %}
 
 This creates a binary sensor that:
 - Turns **ON** when a Free Electricity Session starts
