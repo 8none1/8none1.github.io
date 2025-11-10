@@ -44,13 +44,12 @@ social-network-links:
   email: "blog@whizzy.org"
   rss: true  # remove this line if you don't want to show an RSS link at the bottom
   github: 8none1
-  twitter: 8none1
   mastodon: fosstodon.org/@8none1
+  bluesky: 8none1.org
 
 rss-description: whizzy.org RSS feed
 
 share-links-active:
-  twitter: true
   facebook: true
   linkedin: true
 #  vk: false
