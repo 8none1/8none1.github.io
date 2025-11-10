@@ -3,6 +3,7 @@ layout: post
 title: "Octopus Energy Free Electricity Sessions: Official GraphQL API!"
 date: 2025-11-10
 tags: [octopus-energy, home-assistant, api, graphql, automation]
+social-share: true
 ---
 
 ## TL;DR

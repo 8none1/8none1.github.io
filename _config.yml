@@ -52,7 +52,10 @@ rss-description: whizzy.org RSS feed
 share-links-active:
   facebook: true
   linkedin: true
+  reddit: true
 #  vk: false
+# Note: Mastodon and Bluesky are not available as share buttons in Beautiful Jekyll yet
+# They are only available as profile links in the footer (configured above in social-network-links)
 
 excerpt_length: 50
 feed_show_excerpt: true
