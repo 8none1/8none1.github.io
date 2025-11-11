@@ -46,9 +46,8 @@ The Free Electricity Sessions API is **reliable and accurate**. It returns event
 - Start time (ISO 8601 format)
 - End time (ISO 8601 format)
 - Event code
-- Automatic filtering for future events only
 
-**This is now the recommended method** for tracking Free Electricity Sessions!
+**This is now the recommended method** for tracking Free Electricity Sessions.
 
 ### Power Ups API: Still in Development?
 
@@ -87,7 +86,7 @@ https://www.whizzy.org/octopus_powerups/free_electricity_session_graphql.json
 https://www.whizzy.org/octopus_powerups/free_electricity_session.json
 ```
 
-### Power Ups (UKPN)
+### Power Ups
 
 **GraphQL** (experimental - placeholder data):
 ```
@@ -99,7 +98,7 @@ https://www.whizzy.org/octopus_powerups/powerup_graphql.json
 https://www.whizzy.org/octopus_powerups/powerup.json
 ```
 
-**All files use the same JSON format** for drop-in compatibility!
+The graphql JSON data includes an additional field `code` which is some kind of internal identifier as provided by Octopus.
 
 ## Home Assistant Integration with Octopus Energy API
 
@@ -257,12 +256,10 @@ The API was added to Octopus Energy's GraphQL schema on **May 29, 2025** accordi
 
 If you're using my previous email-based solution:
 
-1. **Update your REST sensor URL** to point to `free_electricity_session_graphql.json`
+1. **Update your REST sensor URL** to point to `free_electricity_session_graphql.json` and include the new `code` field
 3. **Keep existing binary sensors** - they work with both data sources
 4. **Monitor both endpoints** for a few weeks to verify reliability
 5. **For Power Ups**: Continue using the existing email-based endpoint
-
-The JSON format is **100% compatible**, so no changes to your automations needed!
 
 ## Open Source and Community
 
