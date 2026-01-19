@@ -5,7 +5,7 @@ subtitle: Hello chief let's talk, why not.
 cover-img: "/assets/img/flask.png"
 ---
 
-I'm **Will Cooke** (aka **8none1**). See my [identity page](/will-cooke/) for a quick overview and links to find me elsewhere.
+I'm **Will Cooke**. See my [identity page](/will-cooke/) for a quick overview and links to find me elsewhere.
 
 I like computers.
 

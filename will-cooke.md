@@ -20,7 +20,7 @@ I'm Will Cooke (aka 8none1). This is my personal site: [whizzy.org](https://www.
 
 ## What I work on
 
-- **Chainguard** - Director on the OS team, working on secure container images and supply chain security
+- **Chainguard** - Manager the OS team, working on secure container images and supply chain security
 - **Late Night Linux** - Co-host of the weekly podcast about Linux and free software
 - **Open Source** - Long-time contributor and advocate; former Director of Ubuntu Desktop at Canonical
 - **Home Automation** - Building and tinkering with IoT devices and smart home systems
