@@ -18,14 +18,15 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: whizzy.org
+title: "Will Cooke (8none1)"
 author: Will Cooke
 email: blog@whizzy.org
 description: >- # this means to ignore newlines until "baseurl:"
-  On code and gadgets
+  Will Cooke (8none1) - Software engineer, podcaster, and Linux enthusiast. Director at Chainguard, Late Night Linux podcast co-host. Writing about code, gadgets, and home automation.
 
 navbar-links:
    About Me: "aboutme"
+   Will Cooke: "will-cooke"
 #   Resources:
 #     - Beautiful Jekyll: "https://beautifuljekyll.com"
 #     - Learn markdown: "https://www.markdowntutorial.com/"
