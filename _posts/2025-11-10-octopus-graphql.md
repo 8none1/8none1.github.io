@@ -4,6 +4,7 @@ title: "Octopus Energy Free Electricity Sessions: Official GraphQL API!"
 date: 2025-11-10
 tags: [octopus-energy, home-assistant, api, graphql, automation]
 social-share: true
+excerpt: "Octopus Energy now has an official GraphQL API for Free Electricity Sessions - no more email scraping! Here's how to integrate it with Home Assistant."
 ---
 
 ## TL;DR
