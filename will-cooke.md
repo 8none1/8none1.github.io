@@ -2,7 +2,7 @@
 layout: page
 title: "Will Cooke (8none1)"
 permalink: /will-cooke/
-description: "Will Cooke (8none1) - Software engineer, podcaster, and Linux enthusiast. This is the official identity page for Will Cooke."
+share-description: "Will Cooke (8none1) - Software engineer, podcaster, and Linux enthusiast. Manager at Chainguard, Late Night Linux co-host, former Ubuntu Desktop Director."
 ---
 
 # Will Cooke

@@ -1,8 +1,9 @@
 ---
 layout: page
-title: About me
+title: "About Will Cooke (8none1)"
 subtitle: Hello chief let's talk, why not.
 cover-img: "/assets/img/flask.png"
+share-description: "About Will Cooke (8none1) - Software engineer at Chainguard, former Ubuntu Desktop Director at Canonical, Late Night Linux podcast co-host."
 ---
 
 I'm **Will Cooke**. See my [identity page](/will-cooke/) for a quick overview and links to find me elsewhere.
