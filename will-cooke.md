@@ -7,6 +7,8 @@ share-description: "Will Cooke (8none1) - Software engineer, podcaster, and Linu
 
 # Will Cooke
 
+<img src="/assets/img/will-cooke-8none1.jpg" alt="Will Cooke (aka 8none1)" width="418" height="418" />
+
 I'm Will Cooke (aka 8none1). This is my personal site: [whizzy.org](https://www.whizzy.org/).
 
 ## Where to find me
