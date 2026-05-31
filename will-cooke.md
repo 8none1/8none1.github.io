@@ -32,3 +32,16 @@ I'm **Will Cooke** (aka **8none1**), a software engineer, engineering manager an
 ## More about me
 
 For more details about my background and interests, see the [About Me](/aboutme/) page.
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://www.whizzy.org/will-cooke/#profilepage",
+  "url": "https://www.whizzy.org/will-cooke/",
+  "name": "Will Cooke (8none1)",
+  "mainEntity": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+  "about": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+  "isPartOf": { "@id": "https://www.whizzy.org/#website" }
+}
+</script>
