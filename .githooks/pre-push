@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# Refuse to push to the upstream Beautiful Jekyll theme repo.
+#
+# This site is a fork of daattali/beautiful-jekyll. Pushes (and the PRs that
+# can follow) must only ever go to our own fork, 8none1/8none1.github.io.
+# Git passes the remote name as $1 and its URL as $2.
+#
+# To enable this hook, run (once):
+#   git config core.hooksPath .githooks
+
+remote_name="$1"
+remote_url="$2"
+
+if printf '%s %s' "$remote_name" "$remote_url" | grep -qiE 'daattali/beautiful-jekyll'; then
+  echo "✋ Blocked: refusing to push to the upstream theme repo (daattali/beautiful-jekyll)." >&2
+  echo "   Push to your own fork instead:  git push origin <branch>" >&2
+  exit 1
+fi
+
+exit 0
