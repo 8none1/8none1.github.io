@@ -151,30 +151,72 @@
 
   <link rel="shortcut icon" type="image/png" href="favicon.ico">
 
-  <!-- Person structured data for Will Cooke (8none1) -->
+  <!-- Person + WebSite structured data for Will Cooke (8none1) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Will Cooke",
-    "alternateName": "8none1",
-    "url": "https://www.whizzy.org/",
-    "image": "https://www.whizzy.org/assets/img/will-cooke-8none1.jpg",
-    "sameAs": [
-      "https://github.com/8none1",
-      "https://fosstodon.org/@8none1",
-      "https://bsky.app/profile/8none1.org",
-      "https://www.linkedin.com/in/will-cooke-64b69417/",
-      "https://latenightlinux.com",
-      "https://ubuntu.com/blog/author/will-cooke",
-      "https://canonical.com/blog/author/will-cooke",
-      "https://www.influxdata.com/blog/author/will-cooke"
-    ],
-    "jobTitle": "OS Team",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Chainguard"
-    }
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://www.whizzy.org/will-cooke/#person",
+        "name": "Will Cooke",
+        "alternateName": "8none1",
+        "description": "Will Cooke is a software engineer, engineering manager and Linux developer based in the United Kingdom. He co-hosts the Late Night Linux podcast and writes about software, Linux, home automation and self-hosting.",
+        "url": "https://www.whizzy.org/will-cooke/",
+        "mainEntityOfPage": "https://www.whizzy.org/will-cooke/",
+        "image": "https://www.whizzy.org/assets/img/will-cooke-8none1.jpg",
+        "jobTitle": "Software Engineer",
+        "nationality": "British",
+        "knowsAbout": [
+          "Software Engineering",
+          "Linux",
+          "Ubuntu",
+          "Open Source Software",
+          "Home Automation",
+          "Home Assistant",
+          "Self-hosting",
+          "Supply Chain Security"
+        ],
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Chainguard",
+          "url": "https://www.chainguard.dev/"
+        },
+        "alumniOf": [
+          {
+            "@type": "Organization",
+            "name": "InfluxData",
+            "url": "https://www.influxdata.com/"
+          },
+          {
+            "@type": "Organization",
+            "name": "Canonical",
+            "url": "https://www.canonical.com/"
+          }
+        ],
+        "sameAs": [
+          "https://github.com/8none1",
+          "https://fosstodon.org/@8none1",
+          "https://bsky.app/profile/8none1.org",
+          "https://www.linkedin.com/in/will-cooke-64b69417/",
+          "https://latenightlinux.com",
+          "https://ubuntu.com/blog/author/will-cooke",
+          "https://canonical.com/blog/author/will-cooke",
+          "https://www.influxdata.com/blog/author/will-cooke"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.whizzy.org/#website",
+        "name": "Whizzy.org",
+        "alternateName": "Will Cooke (8none1)",
+        "url": "https://www.whizzy.org/",
+        "description": "{{ site.description | strip_newlines | strip_html | xml_escape }}",
+        "inLanguage": "en",
+        "author": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+        "publisher": { "@id": "https://www.whizzy.org/will-cooke/#person" }
+      }
+    ]
   }
   </script>
 

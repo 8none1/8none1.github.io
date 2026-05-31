@@ -4,6 +4,29 @@ layout: base
 
 {% include header.html type="post" %}
 
+{%- capture post_desc -%}
+  {%- if page.share-description -%}{{ page.share-description }}
+  {%- elsif page.excerpt -%}{{ page.excerpt | strip_html }}
+  {%- elsif page.subtitle -%}{{ page.subtitle }}{%- endif -%}
+{%- endcapture -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ page.title | strip_html | jsonify }},
+  "description": {{ post_desc | strip_newlines | strip_html | truncate: 300 | jsonify }},
+  "url": "{{ page.url | absolute_url }}",
+  "mainEntityOfPage": "{{ page.url | absolute_url }}",
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.last-updated | default: page.date | date_to_xmlschema }}",
+  {% if page.thumbnail-img or page.cover-img %}"image": "{{ page.thumbnail-img | default: page.cover-img | absolute_url }}",{% endif %}
+  "author": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+  "publisher": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+  "isPartOf": { "@id": "https://www.whizzy.org/#website" },
+  "inLanguage": "en"
+}
+</script>
+
 <div class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
   <div class="row">
     <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
@@ -53,6 +76,8 @@ layout: base
           {% endfor %}
         </div>
       {% endif %}
+
+      {% include author-box.html %}
 
       {% if page.after-content %}
         <div class="after-content">
