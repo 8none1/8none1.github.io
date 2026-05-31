@@ -1,6 +1,7 @@
 ---
 layout: page
 title: "Will Cooke (8none1)"
+share-title: "Will Cooke (8none1) – About"
 permalink: /will-cooke/
 share-description: "Will Cooke (8none1) - Software engineer, podcaster, and Linux enthusiast. Manager at Chainguard, Late Night Linux co-host, former Ubuntu Desktop Director."
 ---
@@ -9,7 +10,7 @@ share-description: "Will Cooke (8none1) - Software engineer, podcaster, and Linu
 
 <img src="/assets/img/will-cooke-8none1.jpg" alt="Will Cooke (aka 8none1)" width="418" height="418" />
 
-I'm Will Cooke (aka 8none1). This is my personal site: [whizzy.org](https://www.whizzy.org/).
+I'm **Will Cooke** (aka **8none1**), a software engineer, engineering manager and Linux developer based in the United Kingdom. I am the owner and author of this website, [whizzy.org](https://www.whizzy.org/).
 
 ## Where to find me
 
