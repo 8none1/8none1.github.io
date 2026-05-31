@@ -23,12 +23,29 @@ I'm **Will Cooke** (aka **8none1**), a software engineer, engineering manager an
 
 ## What I work on
 
-- **Chainguard** - Manager the OS team, working on secure container images and supply chain security
+- **Chainguard** - Manager of the OS team, working on secure container images and supply chain security
 - **Late Night Linux** - Co-host of the weekly podcast about Linux and free software
 - **Open Source** - Long-time contributor and advocate; former Director of Ubuntu Desktop at Canonical
 - **Home Automation** - Building and tinkering with IoT devices and smart home systems
 - **Amateur Radio** - Callsign M7WZY
 
-## More about me
+## Career
 
-For more details about my background and interests, see the [About Me](/aboutme/) page.
+I work at [Chainguard](https://www.chainguard.dev/) on the OS team ([we're hiring](https://www.chainguard.dev/careers)). Before that I was Director of Engineering for the storage engine and write-path at [InfluxData](https://www.influxdata.com), and Director of Ubuntu Desktop at [Canonical](https://www.canonical.com) — I still use Ubuntu all day, every day.
+
+## Interests
+
+As well as Linux and open source, I like home automation, Internet-connected things, plumbing, electrics and electronics, flying, craft beer, chicken wings, and looking at graphs.
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": "https://www.whizzy.org/will-cooke/#profilepage",
+  "url": "https://www.whizzy.org/will-cooke/",
+  "name": "Will Cooke (8none1)",
+  "mainEntity": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+  "about": { "@id": "https://www.whizzy.org/will-cooke/#person" },
+  "isPartOf": { "@id": "https://www.whizzy.org/#website" }
+}
+</script>
