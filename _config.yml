@@ -25,7 +25,6 @@ description: >- # this means to ignore newlines until "baseurl:"
   Will Cooke - Software engineer, podcaster, and Linux enthusiast. Currently at Chainguard, Late Night Linux podcast co-host. Writing about code, gadgets, and home automation.
 
 navbar-links:
-   About Me: "aboutme"
    Will Cooke: "will-cooke"
 #   Resources:
 #     - Beautiful Jekyll: "https://beautifuljekyll.com"
@@ -118,6 +117,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jekyll-remote-theme
+  - jekyll-redirect-from
 
 
 exclude:
