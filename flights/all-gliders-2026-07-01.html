@@ -19,6 +19,7 @@ const viewer=new Cesium.Viewer("c",{
   infoBox:false,selectionIndicator:false,animation:true,timeline:true});
 viewer.scene.globe.enableLighting=true;
 let tmin=null,tmax=null;
+const trails=[], planes=[];
 DATA.flights.forEach(fl=>{
   const pos=new Cesium.SampledPositionProperty();
   fl.samples.forEach(s=>pos.addSample(Cesium.JulianDate.fromIso8601(s[0]),
@@ -29,7 +30,7 @@ DATA.flights.forEach(fl=>{
   if(!tmin||Cesium.JulianDate.lessThan(t0,tmin))tmin=t0;
   if(!tmax||Cesium.JulianDate.greaterThan(t1,tmax))tmax=t1;
   const col=Cesium.Color.fromCssColorString(fl.color);
-  viewer.entities.add({
+  planes.push(viewer.entities.add({
     name:fl.name,
     availability:new Cesium.TimeIntervalCollection([new Cesium.TimeInterval({start:t0,stop:t1})]),
     position:pos, orientation:new Cesium.VelocityOrientationProperty(pos),
@@ -37,14 +38,20 @@ DATA.flights.forEach(fl=>{
       color:col, colorBlendMode:Cesium.ColorBlendMode.MIX, colorBlendAmount:0.6,
       silhouetteColor:col, silhouetteSize:1.5},
     path:{resolution:1, material:col, width:3, leadTime:0, trailTime:100000}
-  });
-  viewer.entities.add({name:fl.name+" trail",
+  }));
+  trails.push(viewer.entities.add({name:fl.name+" trail",
     polyline:{positions:Cesium.Cartesian3.fromDegreesArrayHeights(fl.samples.flatMap(s=>[s[1],s[2],s[3]])),
-    width:1, material:col.withAlpha(0.35)}});
+    width:1, material:col.withAlpha(0.35)}}));
 });
-const leg=[`<b>${DATA.title}</b><br><span class="hint">${DATA.flights.length} flights, ${DATA.legend.length} aircraft &middot; press C to copy camera</span><br>`];
+const leg=[`<b>${DATA.title}</b><br><span class="hint">${DATA.flights.length} flights, ${DATA.legend.length} aircraft &middot; press C to copy camera</span><br>`,
+  `<label style="cursor:pointer;user-select:none"><input type="checkbox" id="trailtoggle" checked> show trails</label><br>`];
 DATA.legend.forEach(a=>leg.push(`<span class="sw" style="background:${a.color}"></span>${a.label} (${a.n})<br>`));
 document.getElementById("legend").innerHTML=leg.join("");
+document.getElementById("trailtoggle").addEventListener("change",e=>{
+  const s=e.target.checked;
+  trails.forEach(t=>{t.show=s;});
+  planes.forEach(p=>{p.path.show=s;});
+});
 
 // opening camera (position = X/Y/Z, angle = heading/pitch)
 function goHome(){
