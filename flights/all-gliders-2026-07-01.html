@@ -55,7 +55,8 @@ const leg=[`<b>${DATA.title}</b><br><span class="hint">${DATA.flights.length} fl
   `<div style="margin:4px 0;user-select:none">trails:
     <label><input type="radio" name="tm" value="full"> full</label>
     <label><input type="radio" name="tm" value="active" checked> active</label>
-    <label><input type="radio" name="tm" value="off"> off</label></div>`];
+    <label><input type="radio" name="tm" value="off"> off</label>
+    <br><label style="cursor:pointer"><input type="checkbox" id="nightsky" checked> night sky</label></div>`];
 DATA.legend.forEach(a=>leg.push(`<span class="sw" style="background:${a.color}"></span>${a.label} (${a.n})<br>`));
 leg.push(`<div class="hint" style="margin-top:6px">ASK21 model: <a style="color:#8cf" href="https://github.com/Ysurac/FlightAirMap-3dmodels">FlightAirMap</a> (GPLv2)</div>`);
 document.getElementById("legend").innerHTML=leg.join("");
@@ -68,6 +69,15 @@ document.querySelectorAll('input[name=tm]').forEach(r=>r.addEventListener("chang
   if(e.target.checked) setTrailMode(e.target.value);
 }));
 setTrailMode("active");
+
+// night sky: drop the bright atmosphere + ground haze, revealing the star skybox (ground stays lit)
+function setNight(on){
+  viewer.scene.skyAtmosphere.show=!on;
+  viewer.scene.globe.showGroundAtmosphere=!on;
+  viewer.scene.backgroundColor=Cesium.Color.BLACK;
+}
+document.getElementById("nightsky").addEventListener("change",e=>setNight(e.target.checked));
+setNight(true);
 
 // opening camera (position = X/Y/Z, angle = heading/pitch)
 function goHome(){
