@@ -18,6 +18,10 @@ const viewer=new Cesium.Viewer("c",{
   baseLayerPicker:false,geocoder:false,homeButton:false,navigationHelpButton:false,
   infoBox:false,selectionIndicator:false,animation:true,timeline:true});
 viewer.scene.globe.enableLighting=true;
+// transparent place-names / boundaries overlay (toggled off by default)
+const labelLayer=viewer.imageryLayers.addImageryProvider(new Cesium.ArcGisMapServerImageryProvider(
+  {url:"https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer"}));
+labelLayer.show=false;
 let tmin=null,tmax=null;
 const trails=[], planes=[];
 DATA.flights.forEach(fl=>{
@@ -56,7 +60,9 @@ const leg=[`<b>${DATA.title}</b><br><span class="hint">${DATA.flights.length} fl
     <label><input type="radio" name="tm" value="full"> full</label>
     <label><input type="radio" name="tm" value="active" checked> active</label>
     <label><input type="radio" name="tm" value="off"> off</label>
-    <br><label style="cursor:pointer"><input type="checkbox" id="nightsky" checked> night sky</label></div>`];
+    <br><label style="cursor:pointer"><input type="checkbox" id="nightsky" checked> night sky</label>
+    <label style="cursor:pointer;margin-left:8px"><input type="checkbox" id="placenames"> place names</label>
+    <br><button id="resetview" style="cursor:pointer;margin-top:4px">reset view</button></div>`];
 DATA.legend.forEach(a=>leg.push(`<span class="sw" style="background:${a.color}"></span>${a.label} (${a.n})<br>`));
 leg.push(`<div id="models" class="hint" style="margin-top:6px"></div>`);
 leg.push(`<div class="hint" style="margin-top:6px">3D models: <a style="color:#8cf" href="https://github.com/Ysurac/FlightAirMap-3dmodels">FlightAirMap</a> (GPLv2)</div>`);
@@ -80,6 +86,10 @@ function setNight(on){
 }
 document.getElementById("nightsky").addEventListener("change",e=>setNight(e.target.checked));
 setNight(true);
+
+// place names overlay + reset-view button
+document.getElementById("placenames").addEventListener("change",e=>{labelLayer.show=e.target.checked;});
+document.getElementById("resetview").addEventListener("click",function(){goHome(); this.blur();});
 
 // opening camera (position = X/Y/Z, angle = heading/pitch)
 function goHome(){
