@@ -1,0 +1,76 @@
+name: Cesium version check
+
+# Weekly check: is the Cesium version baked into the flight replays behind the
+# latest release? If so, open an issue. The version is pinned in the `CES`
+# constant of make_replay.py (in the ognflights repo) and baked into
+# flights/*.html at generation time; the fix is to bump it there and regenerate.
+
+on:
+  schedule:
+    - cron: "0 8 * * 1"   # Mondays 08:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare pinned vs latest Cesium
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          pinned=$(grep -rho 'releases/[0-9.]*/Build/Cesium' flights/ 2>/dev/null \
+                   | grep -o '[0-9.]\+' | sort -V | tail -1 || true)
+          if [ -z "$pinned" ]; then
+            echo "No pinned Cesium version found in flights/*.html; nothing to check."
+            exit 0
+          fi
+          latest=$(curl -fsSL https://registry.npmjs.org/cesium/latest | jq -r .version)
+
+          echo "pinned=$pinned  latest=$latest"
+
+          # up to date?
+          if [ "$pinned" = "$latest" ]; then
+            echo "Up to date."
+            exit 0
+          fi
+          # is latest actually newer than pinned? (guard against odd cases)
+          newest=$(printf '%s\n%s\n' "$pinned" "$latest" | sort -V | tail -1)
+          if [ "$newest" = "$pinned" ]; then
+            echo "Pinned ($pinned) is not older than latest ($latest); nothing to do."
+            exit 0
+          fi
+
+          title="Cesium update available: $latest (using $pinned)"
+          # de-dupe: skip if an open issue for this exact latest version already exists
+          existing=$(gh issue list --state open --search "in:title \"Cesium update available: $latest\"" \
+                     --json number --jq '.[0].number // empty')
+          if [ -n "$existing" ]; then
+            echo "Open issue #$existing already tracks $latest; nothing to do."
+            exit 0
+          fi
+
+          body=$(cat <<EOF
+          The flight replays use Cesium **$pinned**, but the latest release is **$latest**.
+
+          Release notes: https://github.com/CesiumGS/cesium/releases
+
+          To upgrade:
+          1. Bump the \`CES\` constant version in \`ognflights/out/make_replay.py\`.
+          2. Regenerate the replays and re-copy them into \`flights/\`.
+          3. Test in a browser: imagery loads, models render/orient, timeline plays.
+             (Large jumps have breaking API changes, e.g. the Viewer \`imageryProvider\`
+             option and the ArcGIS/terrain async constructors, so verify before pushing.)
+
+          _Opened automatically by the weekly Cesium version check._
+          EOF
+          )
+          gh issue create --title "$title" --body "$body"
+          echo "Opened issue: $title"
