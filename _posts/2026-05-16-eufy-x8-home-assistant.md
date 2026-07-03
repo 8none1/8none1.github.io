@@ -78,6 +78,7 @@ That's two automations. There's one small wrinkle: the robot has no DPS field th
 
 Triggers when the granular status sensor transitions from "Cleaning" to "Returning to dock", and the robot has cleaned at least 25 m² (so a quick spot-clean or being moved off the dock doesn't fire it). It waits for the robot to actually dock before sending the goto, because the goto sequence is a `clear` + 35-second wait + `goto`, and sending that while the robot is still mid-journey gets ignored.
 
+{% raw %}
 ```yaml
 alias: Downstairs vacuum - go to bin after clean
 mode: single
@@ -109,6 +110,7 @@ action:
       x: 2283   # your bin coordinates from intercept_goto.py
       y: -363
 ```
+{% endraw %}
 
 A note on the status sensor: the integration deliberately exposes two state-ish entities. The standard `vacuum.downstairs` entity uses Home Assistant's canonical vacuum states (`docked`, `cleaning`, `returning`, etc.), which is the right thing for HA's vacuum card to render. But for automations you want the more granular `sensor.downstairs_status` — it distinguishes "Cleaning", "Returning to dock", "Going to location", "Standby", and so on, which lets you write triggers that the canonical state would collapse together.
 
@@ -116,6 +118,7 @@ A note on the status sensor: the integration deliberately exposes two state-ish 
 
 Triggers when the granular status sensor transitions from "Going to location" to "Standby" (= "I've arrived"), **and** the headed-to-bin flag is set. The beep is the `locate_brief` service, which I added specifically for this — the default locate beeps for nearly a minute, which is too long to be a useful notification.
 
+{% raw %}
 ```yaml
 alias: Downstairs vacuum - beep when at bin
 mode: single
@@ -140,6 +143,7 @@ action:
     data:
       duration: 5
 ```
+{% endraw %}
 
 Both automations do case-insensitive string comparisons on the state values, because Eufy have form for changing capitalisation between firmware revisions and I'd rather not have it break silently.
 
