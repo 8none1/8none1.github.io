@@ -26,7 +26,7 @@ From the Amazon Developer Site, go to Apps &amp; Services -&gt; Login With Amazo
 
 Click “Create a New Security Profile”. Fill out the form along these lines:
 
-![screenshot-from-2016-11-30-13-40-23](/wp-content/uploads/2016/12/Screenshot-from-2016-11-30-13-40-23-1024x468.png)
+![screenshot-from-2016-11-30-13-40-23](/wp-content/uploads/2016/12/Screenshot-from-2016-11-30-13-40-23.png)
 
 and hit Save.
 

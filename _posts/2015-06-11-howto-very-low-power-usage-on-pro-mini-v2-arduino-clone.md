@@ -39,7 +39,7 @@ For a 2000 mAh battery, that would give about 667 hours of runtime, or 28 days. 
 
 In this photo you can see I’ve identified some sections which are related to the power usage of the Pro Mini.
 
-![arduino_highlights](/wp-content/uploads/2015/06/arduino_highlights-225x300.jpg)]
+![arduino_highlights](/wp-content/uploads/2015/06/arduino_highlights.jpg)
 The red section is the power LED. This is always on when power is applied and sucks about 0.2mA when lit. If you don’t need this to be lit all the time then you can easily remove it to save some juice. I found the easiest way was to use a pair of cutters to snip/crush the middle of the LED and then use a soldering iron to remove the bits left over.
 
 The green section is the on-board regulator. If you are going to be supplying power to the board via a couple of AA batteries (each battery being 1.5v, so two is 3v) then you don’t need the regulator. You can cut this off too if you like, but.. keep reading, there’s no need to hack it off.

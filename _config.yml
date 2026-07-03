@@ -110,19 +110,18 @@ defaults:
       layout: "page"
 
 
-#theme: beautiful-jekyll-theme
-remote_theme: daattali/beautiful-jekyll@6.0.1
+# The beautiful-jekyll theme is vendored locally (_layouts / _includes / assets),
+# so we no longer pull it via remote_theme. This removes the flaky per-build
+# fetch and lets us build reliably on any Jekyll 4.x in CI.
 plugins:
   - jekyll-feed
   - jekyll-paginate
   - jekyll-sitemap
-  - jekyll-remote-theme
   - jekyll-redirect-from
 
 
 exclude:
   - CHANGELOG.md
-  - CNAME
   - Gemfile
   - Gemfile.lock
   - LICENSE
