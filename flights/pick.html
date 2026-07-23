@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Pick flights - ognflights</title>
+<style>:root{color-scheme:dark;--bg:#0e111c;--panel:#1a2032;--panel2:#232b44;--line:#333c58;--text:#f2f1e8;--dim:#b6b5a7;--faint:#6b7288;--accent:#d97662;--accent2:#c9604b;--accent-ink:#2b130c;--blue:#81d5cc;--ok:#2ecc71;--warn:#e0a33e;--bad:#e74c3c;--radius:14px;--radius-sm:9px;--overlay:rgba(14,17,28,.82);--overlay-line:rgba(151,162,197,.26);--shadow:0 6px 24px rgba(0,0,0,.25)}
+.of-body,.of-body *{box-sizing:border-box}
+.of-body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--bg);background-image:radial-gradient(120% 42rem at 50% -12rem,#28304f 0%,rgba(14,17,28,0) 70%);background-repeat:no-repeat;min-height:100vh}
+.of-wrap{max-width:760px;margin:0 auto;padding:1.4rem 1.1rem 3rem}
+.of-wrap.narrow{max-width:640px}
+.of-nav{font-size:.85rem;color:var(--faint);margin-bottom:1.6rem;display:flex;flex-wrap:wrap;gap:.2rem 1rem}
+.of-nav a{color:var(--dim);text-decoration:none}
+.of-nav a:hover{color:var(--blue)}
+.of-nav a[aria-current]{color:var(--blue);font-weight:600}
+.of-header{text-align:center;margin-bottom:1.7rem}
+.of-header .clublogo{display:block;margin:0 auto .8rem;max-height:64px;max-width:320px;filter:brightness(0) invert(1);opacity:.96}
+.of-header .soar{display:block;margin:0 auto .35rem;width:150px;height:56px}
+.of-header .club{color:var(--dim);font-size:.85rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .3rem}
+.of-header h1{font-size:2rem;letter-spacing:-.02em;margin:0 0 .45rem}
+.of-header .intro{color:var(--dim);margin:0 auto;max-width:32rem;font-size:1.02rem}
+.of-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:1.15rem 1.2rem;box-shadow:var(--shadow)}
+a.of-card{display:block;text-decoration:none;color:inherit;transition:border-color .15s,background .15s}
+a.of-card:hover{border-color:var(--blue);background:#1f2639}
+.of-btn-primary{display:inline-block;padding:.6rem .95rem;font:inherit;font-size:.95rem;font-weight:700;color:var(--accent-ink);background:linear-gradient(180deg,#e08770,#cf6450);border:0;border-radius:10px;cursor:pointer;text-decoration:none;transition:filter .12s}
+.of-btn-primary:hover{filter:brightness(1.06)}
+.of-btn-primary:active{filter:brightness(.95)}
+.of-btn-secondary{display:inline-block;padding:.55rem .9rem;font:inherit;font-size:.9rem;font-weight:600;color:var(--blue);background:transparent;border:1.5px solid var(--blue);border-radius:10px;cursor:pointer;text-decoration:none;transition:background .12s,color .12s}
+.of-btn-secondary:hover{background:rgba(129,213,204,.12)}
+.of-foot{color:var(--faint);font-size:.8rem;text-align:center;margin-top:2.2rem;line-height:1.6}
+.of-foot a{color:var(--dim)}
+input[type=checkbox],input[type=radio],input[type=range]{accent-color:var(--accent)}
+.of-topbar{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:.15rem .6rem;white-space:nowrap;max-width:96vw;background:var(--overlay);border:1px solid var(--overlay-line);color:var(--text);padding:.3rem .85rem;border-radius:16px;font:13px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.of-topbar b{font-weight:700}
+.of-topbar a{color:var(--blue);text-decoration:none}
+.of-topbar a:hover{text-decoration:underline}
+.of-topbar img.nlogo{display:block;max-height:26px;max-width:160px;filter:brightness(0) invert(1);opacity:.96}
+.of-topbar .of-btn-secondary{padding:.08rem .55rem;font-size:12px;font-weight:600;border-width:1px;border-radius:8px}
+.of-topbar input[type=date],.of-topbar select{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:.12rem .3rem}
+.of-panel{background:var(--overlay);border:1px solid var(--overlay-line);color:var(--text);border-radius:var(--radius-sm);box-shadow:var(--shadow);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.of-panel button{appearance:none;font:12px system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:.2rem .55rem}
+.of-panel button:hover{border-color:var(--dim)}
+.of-panel input[type=range]{vertical-align:middle}
+.of-helpwrap{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(8,10,18,.55)}
+.of-helpwrap[hidden]{display:none}
+.of-help{position:relative;width:100%;max-width:430px;box-sizing:border-box;background:var(--overlay);border:1px solid var(--overlay-line);color:var(--text);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.1rem 1.25rem 1.2rem;font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.of-help h2{margin:0 1.6rem .55rem 0;font-size:1.08rem;letter-spacing:0}
+.of-help ul{margin:0 0 1rem;padding-left:1.15rem;color:var(--dim)}
+.of-help li{margin:.5rem 0}
+.of-help b{color:var(--blue);font-weight:600}
+.of-help-x{position:absolute;top:.4rem;right:.45rem;appearance:none;background:none;border:0;color:var(--dim);font-size:22px;line-height:1;cursor:pointer;padding:.25rem .5rem;border-radius:6px}
+.of-help-x:hover{color:var(--text)}
+@media(max-width:640px){.of-topbar{left:8px;right:8px;transform:none;flex-wrap:wrap;max-width:none;font-size:12px;gap:.1rem .5rem;padding:.28rem .6rem}.of-topbar img.nlogo{max-height:22px;max-width:118px}}
+
+.acg{padding:.55rem .8rem;margin-bottom:.6rem}
+.acg label.fl{display:block;margin:.15rem 0 .1rem 1.4rem;cursor:pointer;font-size:.95rem}
+.acg label.allsel{cursor:pointer}
+.pdrow{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center}
+.pdrow input[type=date]{font:inherit;color:var(--text);background:var(--panel);
+border:1px solid var(--line);border-radius:8px;padding:.35rem .5rem}
+#bar{position:sticky;bottom:10px;margin-top:1rem;padding:.7rem;text-align:center;
+background:var(--overlay);border:1px solid var(--overlay-line);border-radius:12px;
+backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#bar #cnt{margin-left:.7rem;color:var(--dim);font-size:.9rem}
+</style></head><body class="of-body"><div class="of-wrap">
+<nav class="of-nav"><a href="index.html">&larr; replay</a></nav>
+<header class="of-header"><h1>Pick flights</h1>
+<p class="intro">Choose a day, then tick the flights you want and replay just those. Times are UTC.</p></header>
+<div class="of-card"><div class="pdrow">
+  <label>Day: <input type="date" id="pd"></label>
+  <a href="#" id="whole" class="of-btn-secondary">Replay the whole day &rarr;</a>
+</div></div>
+<div id="list" style="margin-top:1rem"></div>
+<div id="bar"><button id="go" class="of-btn-primary" disabled>Replay selected</button><span id="cnt"></span></div>
+</div>
+<script>
+const EXTERNAL=true, DATABASE="https://raw.githubusercontent.com/8none1/ognflights/public-data/", REPLAYURL="index.html";
+function dayUrl(d){ return EXTERNAL ? (DATABASE+d+".json") : ("/day.json?day="+d); }
+function daysUrl(){ return EXTERNAL ? (DATABASE+"manifest.json") : "/days.json"; }
+function pad(n){ return String(n).padStart(2,"0"); }
+function hm(iso){ const d=new Date(iso); return pad(d.getUTCHours())+":"+pad(d.getUTCMinutes()); }
+function dur(a,b){ let s=Math.round((Date.parse(b)-Date.parse(a))/1000);
+  const h=Math.floor(s/3600), m=Math.round((s%3600)/60); return h?(h+"h"+pad(m)):(m+"m"); }
+async function fetchJson(u){ const r=await fetch(u,{cache:"no-cache"}); if(!r.ok) throw 0; return r.json(); }
+function flightId(DATA,f){ const k=(DATA.legend[f.ai]||{}).key||""; return k+"@"+Math.round(Date.parse(f.samples[0][0])/1000); }
+function selectedIds(){ return Array.prototype.map.call(document.querySelectorAll(".flk:checked"),x=>x.dataset.id); }
+function updateCount(){ const n=selectedIds().length, go=document.getElementById("go");
+  go.disabled=!n; document.getElementById("cnt").textContent=n?(n+" selected"):"none selected"; }
+let curDay=null;
+function renderList(DATA){
+  const list=document.getElementById("list");
+  if(!DATA.flights||!DATA.flights.length){ list.innerHTML='<p class="hint">No flights recorded for '+curDay+'.</p>'; updateCount(); return; }
+  const byAi={}; DATA.flights.forEach((f,i)=>{ (byAi[f.ai]=byAi[f.ai]||[]).push(i); });
+  let html="";
+  DATA.legend.forEach((a,ai)=>{
+    const fis=(byAi[ai]||[]).slice().sort((x,y)=>Date.parse(DATA.flights[x].samples[0][0])-Date.parse(DATA.flights[y].samples[0][0]));
+    if(!fis.length) return;
+    html+='<div class="of-card acg"><label class="allsel"><input type="checkbox" class="selall" data-ai="'+ai+'"> <b>'+a.label+'</b> <span class="hint">('+fis.length+')</span></label>';
+    fis.forEach(i=>{ const f=DATA.flights[i], s=f.samples;
+      html+='<label class="fl"><input type="checkbox" class="flk" data-ai="'+ai+'" data-id="'+flightId(DATA,f)+'"> '
+        +hm(s[0][0])+'&rarr;'+hm(s[s.length-1][0])+' <span class="hint">('+dur(s[0][0],s[s.length-1][0])+')</span></label>';
+    });
+    html+='</div>';
+  });
+  list.innerHTML=html;
+  list.querySelectorAll(".selall").forEach(cb=>cb.addEventListener("change",e=>{
+    list.querySelectorAll('.flk[data-ai="'+e.target.dataset.ai+'"]').forEach(x=>{ x.checked=e.target.checked; });
+    updateCount();
+  }));
+  list.querySelectorAll(".flk").forEach(cb=>cb.addEventListener("change",updateCount));
+  updateCount();
+}
+async function loadPickDay(day){
+  curDay=day;
+  const list=document.getElementById("list"); list.innerHTML='<p class="hint">Loading&hellip;</p>';
+  try{ renderList(await fetchJson(dayUrl(day))); }
+  catch(e){ list.innerHTML='<p class="hint">No flights recorded for '+day+'.</p>'; updateCount(); }
+}
+async function init(){
+  const pd=document.getElementById("pd");
+  let days=[];
+  try{ const mf=await fetchJson(daysUrl()); days=(mf.days||[]).map(d=>typeof d==="string"?d:d.day); }catch(e){}
+  days.sort();
+  if(days.length){ pd.min=days[0]; pd.max=days[days.length-1]; }
+  const want=new URLSearchParams(location.search).get("day");
+  pd.value=(want && (!days.length||days.indexOf(want)>=0)) ? want : (days[days.length-1]||"");
+  pd.addEventListener("change",()=>loadPickDay(pd.value));
+  document.getElementById("whole").addEventListener("click",e=>{ e.preventDefault(); if(pd.value) location.href=REPLAYURL+"?day="+pd.value; });
+  document.getElementById("go").addEventListener("click",()=>{ const ids=selectedIds();
+    if(ids.length&&curDay) location.href=REPLAYURL+"?day="+curDay+"&sel="+encodeURIComponent(ids.join(",")); });
+  if(pd.value) loadPickDay(pd.value);
+}
+init();
+</script></body></html>
