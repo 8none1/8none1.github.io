@@ -9,7 +9,7 @@ excerpt: "I had a couple of spare Growatt ShineWiFi-X dongles and wanted them do
 
 ## TL;DR
 
-The Growatt ShineWiFi-X is a Wi-Fi dongle that plugs into the "USB" port on a Growatt inverter. Inside it is an ESP8266. The port looks like USB but it is not: the pins carry plain TTL serial, and what flows over that serial line is Modbus. So the dongle is really a serial-to-Wi-Fi Modbus gadget wearing a USB-shaped shell. I reflashed two spare ones with [ESPHome](https://esphome.io/) so they act as a **dumb serial-to-TCP bridge**, an [Elfin EW11](https://www.hi-flying.com/elfin-ew10-elfin-ew11) clone, and let my existing Python poller keep doing all the Modbus decoding. Firmware and notes are in my [growatt_modbus repo](https://github.com/8none1/growatt_modbus) under `shinewifi-bridge/`.
+The Growatt ShineWiFi-X is a Wi-Fi dongle that plugs into the "USB" port on a Growatt inverter. Inside it is an ESP8266. The port looks like USB but it is not: the pins carry plain TTL serial, and what flows over that serial line is Modbus. So the dongle is really a serial-to-Wi-Fi Modbus gadget wearing a USB-shaped shell. I reflashed two spare ones with [ESPHome](https://esphome.io/) so they act as a **dumb serial-to-TCP bridge** in place of my [Elfin EW11](https://www.hi-flying.com/elfin-ew10-elfin-ew11) modules, and let my existing Python poller keep doing all the Modbus decoding. Firmware and notes are in my [growatt_modbus repo](https://github.com/8none1/growatt_modbus) under `shinewifi-bridge/`.
 
 ## The setup I already had
 
